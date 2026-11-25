@@ -13,4 +13,4 @@ can_clash = true
 windup = 0.15
 active = 0.15
 recovery = 0.3
-attacks_per_second = 0.7
+attacks_per_second = 1.25

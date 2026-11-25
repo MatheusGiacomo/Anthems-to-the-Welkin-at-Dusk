@@ -31,7 +31,7 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 - Quem já morreu ignora golpes (`IGNORED`).
 
 ### Player (`player/player.gd`)
-- **Atacar** (`attack`): golpe para a frente (`sword_slash.tres`: 0,7 ataque/s), só com o escudo abaixado. O olhar trava durante o ataque (`lock_facing_while_attacking`) e a velocidade cai para `attacking_multiplier`.
+- **Atacar** (`attack`): golpe para a frente (`sword_slash.tres`: 1,25 ataque/s, um a cada 0,8 s), só com o escudo abaixado. O olhar trava durante o ataque (`lock_facing_while_attacking`) e a velocidade cai para `attacking_multiplier`.
 - **Bloquear** (`block`, segurar): ergue o escudo (`player_guard.tres`) fora de um ataque; a velocidade cai para `blocking_multiplier` e não dá para atacar. Soltar o botão abaixa.
 - **Ao abaixar o escudo**, por qualquer motivo, o intervalo do ataque recomeça inteiro; depois de um parry perfeito, recomeça em `perfect_parry_cooldown_scale` (metade).
 - Depois de o escudo **quebrar ou ser interrompido**, só ergue de novo com um novo clique (segurar não reergue sozinho), para o parry perfeito não acontecer sem intenção.
