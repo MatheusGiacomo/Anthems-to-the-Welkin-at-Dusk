@@ -22,7 +22,9 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-_Nenhuma ainda. Formato: cena → nó raiz (tipo) → filhos relevantes e propósito._
+- `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `IsometricCamera` (alvo: `Player`). O `arena.gd` entrega a câmera ao player.
+- `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (cápsula e "nariz" que mostra a frente), `Locomotion`.
+- `camera/isometric_camera.tscn` → `IsometricCamera` (Camera3D ortográfica, `isometric_camera.gd`).
 
 ## Autoloads
 _Nenhum._
