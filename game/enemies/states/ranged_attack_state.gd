@@ -15,6 +15,7 @@ enum Phase { AIMING, DRAWING }
 
 var _phase: Phase = Phase.AIMING
 var _timer: float = 0.0
+var _since_shot: float = INF
 
 
 ## Começa mirando; o primeiro tiro espera `reload_time`.
@@ -22,14 +23,16 @@ func enter() -> void:
 	_set_phase(Phase.AIMING, behavior.reload_time)
 
 
-## Esconde o aviso do tiro (o tiro em preparo é perdido).
+## Esconde o aviso do tiro (o tiro em preparo é perdido) e esquece o último disparo.
 func exit() -> void:
 	_set_phase(Phase.AIMING, behavior.reload_time)
+	_since_shot = INF
 
 
 ## Olha para o alvo; mirando, avança ou fica parado e conta o tempo até puxar; puxando, fica
-## parado e solta a flecha ao fim de `draw_time`.
+## parado e solta a flecha ao fim de `draw_time`. Conta também o tempo desde o último disparo.
 func physics_update(delta: float) -> void:
+	_since_shot += delta
 	var to_target: Vector3 = context.direction_to_target()
 	context.locomotion.face_direction(to_target, delta)
 	var velocity: Vector3 = Vector3.ZERO
@@ -47,6 +50,16 @@ func physics_update(delta: float) -> void:
 		_set_phase(Phase.AIMING, behavior.reload_time)
 
 
+## Devolve se a arma está sendo puxada (a fase antes do disparo).
+func is_drawing() -> bool:
+	return _phase == Phase.DRAWING
+
+
+## Devolve os segundos desde o último disparo neste estado (`INF` se não houve).
+func get_seconds_since_shot() -> float:
+	return _since_shot
+
+
 ## Troca de fase, reinicia o tempo dela e mostra o aviso só enquanto o arco está puxado.
 func _set_phase(phase: Phase, duration: float) -> void:
 	_phase = phase
@@ -56,10 +69,11 @@ func _set_phase(phase: Phase, duration: float) -> void:
 
 
 ## Solta uma flecha do `muzzle` mirada na posição atual do alvo, no nó de projéteis do contexto
-## (ou ao lado do inimigo, se não houver).
+## (ou ao lado do inimigo, se não houver), e zera o tempo desde o disparo.
 func _shoot() -> void:
 	if not context.has_target():
 		return
+	_since_shot = 0.0
 	var arrow: Arrow = arrow_scene.instantiate() as Arrow
 	var parent: Node = context.projectile_parent
 	if parent == null or not is_instance_valid(parent):
