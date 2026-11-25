@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="GuardConfig" format=3]
+
+[ext_resource type="Script" path="res://components/guard/guard_config.gd" id="1_guard"]
+
+[resource]
+script = ExtResource("1_guard")
+max_health = 100.0
+breakable = false
+full_regen_time = 1.5
+broken_lockout = 0.0
+release_lockout = 0.0
+perfect_window = 0.0
+arc_degrees = 120.0
+reflects_attacks = true

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="RangedBehaviorConfig" format=3]
+
+[ext_resource type="Script" path="res://enemies/thief/ranged_behavior_config.gd" id="1_ranged"]
+[ext_resource type="Resource" path="res://enemies/thief/thief_arrow.tres" id="2_arrow"]
+
+[resource]
+script = ExtResource("1_ranged")
+attack_distance = 10.0
+distance_tolerance = 1.5
+distance_hysteresis = 0.5
+run_speed = 5.0
+walk_speed = 1.5
+flee_speed = 5.5
+draw_time = 1.0
+reload_time = 1.0
+arrow_speed = 18.0
+arrow_gravity = 9.8
+aim_height = 1.0
+arrow_attack = ExtResource("2_arrow")
+fight_chance = 0.5

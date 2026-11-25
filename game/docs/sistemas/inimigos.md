@@ -21,6 +21,8 @@ IA de combate dos inimigos, montada com estados reutilizáveis e um cérebro por
 | `CautionState` | Guarda erguida, olha para o alvo, avança até Y, orbita entre Y e Y + tolerância, recua abaixo de Y | `LUNGE_READY` |
 | `LungeState` | Sem guarda; avança durante o preparo do ataque e golpeia; guarda o resultado em `result` | `DONE` |
 | `StaggeredState` | Vulnerável: não age, só freia | — (o cérebro sai em `vulnerable_ended`) |
+| `RangedAttackState` | Mira, puxa o arco e solta flechas balísticas | — |
+| `FleeState` | Corre para longe do alvo | — |
 
 ## Regras
 - Ficar vulnerável interrompe qualquer estado (o `exit` dele cancela ataque e guarda) e leva ao `StaggeredState`; ao sair, o cérebro escolhe o estado pelo tipo de inimigo.
@@ -34,6 +36,15 @@ Cena `henchman.tscn`, cérebro `HenchmanBrain` (só `MeleeTactics`). Valores: `h
 2. **Cautela** (`Caution`): a até X, anda devagar com a guarda erguida. Só volta a correr acima de X + `distance_hysteresis`. A guarda é inquebrável e reflete: golpe defendido atordoa o atacante (`reflected_duration` dele) e agenda a investida para `reflect_lunge_delay` (0,5 s) depois. Com o alvo a até Y + `caution_tolerance` por `time_to_lunge` segundos (mais perto também conta), vai para a investida. O sentido em que orbita é sorteado e troca a cada `strafe_flip_min`–`strafe_flip_max` segundos.
 3. **Investida** (`Lunge`): `henchman_sword.tres` com preparo 0,8 s (o avanço), golpe 0,6 s (o dano, de 0,8 a 1,4 s) e recuperação 0,6 s (2 s no total). A direção e o avanço (distância − `strike_reach`, até `max_lunge_distance`) são fixados no início. Sem guarda o tempo todo: atingido no preparo ou na recuperação, fica vulnerável e a investida é interrompida; atingido no golpe, de frente, há choque.
 - **Depois da investida** (`MeleeBehaviorRules.after_lunge`): acertou o alvo → investida; defendida ou choque → cautela; senão, alvo mais perto que Y → investida, e o resto → cautela. Atingido pelo player → vulnerável e, ao sair, cautela (ou aproximação, se o alvo se afastou).
+
+### Ladrão (`enemies/thief/`)
+Cena `thief.tscn`, cérebro `ThiefBrain`, regras `ThiefRules`. Valores: `thief_ranged.tres` (`RangedBehaviorConfig`, com a flecha `thief_arrow.tres`), `thief_melee.tres` e `thief_dagger.tres` (luta com a adaga), `thief_guard.tres`, `thief_vulnerability.tres`; vida 40.
+1. **Aproximação** (`Chase`): mais longe que X (`attack_distance`, 10 m), corre. Só volta a correr acima de X + `distance_hysteresis`.
+2. **Tiro** (`Shoot`, `RangedAttackState`): olha para o alvo e mira, avançando devagar (`walk_speed`) enquanto o alvo está além de X − `distance_tolerance`; mais perto, fica parado. Depois de `reload_time`, para, puxa o arco por `draw_time` (o arco laranja aparece: o aviso do tiro) e solta a flecha.
+3. **Fuga** (`Flee`): corre para longe do alvo até ficar a X, e volta ao tiro.
+4. **Luta** (`MeleeChase`, `Caution`, `Lunge` com a adaga): a mesma IA do capanga (`MeleeTactics`) com `thief_melee.tres`, até ficar a X do alvo, e volta ao tiro.
+- **Sorteio** ao sair da vulnerabilidade: com o alvo mais perto que X, luta se `randf()` < `fight_chance` (0,5), senão foge. Longe, segue pela distância (tiro ou aproximação).
+- **Flecha** (`enemies/projectiles/arrow.gd`): mirada na posição do alvo no disparo (`aim_height` acima dos pés), trajetória balística mais baixa (`Ballistics.launch_velocity`, 45° se fora de alcance), gravidade `arrow_gravity`. A cada passo testa o trecho com um raio contra o mundo e a HurtBox do player (sem fogo amigo); some no impacto ou após `lifetime`. Efeitos: 10 de dano, 25 de vulnerabilidade, 35 no escudo, nunca aparada nem em choque.
 
 ## Sinais
 - `Enemy.died(enemy)` → quem spawnou o inimigo.
@@ -50,4 +61,7 @@ Cena `henchman.tscn`, cérebro `HenchmanBrain` (só `MeleeTactics`). Valores: `h
 - `test/scenes/henchman_ai_test.gd`: agressivo e longe, corre e entra na cautela.
 - `test/scenes/player_attack_test.gd`: o golpe do player tira vida e deixa o capanga vulnerável.
 - `test/scenes/player_guard_test.gd`: o escudo erguido defende a investida sem perda de vida.
+- `test/unit/thief_rules_test.gd`: aproximação e tiro, sorteio, volta à distância, avanço mirando.
+- `test/unit/ballistics_test.gd`: a trajetória passa pelo alvo; reta sem gravidade; 45° fora de alcance.
+- `test/scenes/thief_arrow_test.gd`: a flecha voa até o player e o escudo a defende (desgaste 35, sem parry).
 - Montagem comum dos testes de cena: `test/scenes/combat_arena.gd` (`CombatTestArena`).
