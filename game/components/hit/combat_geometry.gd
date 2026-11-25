@@ -27,6 +27,26 @@ static func yaw_for_direction(direction: Vector3) -> float:
 	return atan2(-direction.x, -direction.z)
 
 
+## Devolve a velocidade que leva `position` a girar em volta de `center`, no raio `radius`, a
+## `speed` metros por segundo, no sentido de `direction_sign` (+1 anti-horário visto de cima).
+## Corrige o raio no mesmo passo, então quem orbita não se afasta em espiral. Zero se `position`
+## coincidir com `center` no chão ou se `delta` não for positivo.
+static func orbit_velocity(
+	center: Vector3,
+	position: Vector3,
+	radius: float,
+	speed: float,
+	direction_sign: float,
+	delta: float,
+) -> Vector3:
+	var offset: Vector3 = flatten(position - center)
+	if offset.length_squared() < ARC_EPSILON or delta <= 0.0 or radius <= 0.0:
+		return Vector3.ZERO
+	var angle_step: float = direction_sign * speed * delta / radius
+	var next_offset: Vector3 = offset.normalized().rotated(Vector3.UP, angle_step) * radius
+	return (next_offset - offset) / delta
+
+
 ## Devolve se `to_point` (vetor de quem olha até o ponto) está dentro do arco de `arc_degrees`
 ## centrado em `forward`. Um ponto na mesma posição conta como dentro.
 static func is_within_arc(forward: Vector3, to_point: Vector3, arc_degrees: float) -> bool:

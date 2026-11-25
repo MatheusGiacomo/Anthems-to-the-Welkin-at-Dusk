@@ -35,6 +35,23 @@ func test_direction_on_ground_is_flat_and_normalized() -> void:
 	assert_vector(direction).is_equal_approx(Vector3(1.0, 0.0, 0.0), Vector3.ONE * 0.001)
 
 
+func test_orbit_keeps_the_radius() -> void:
+	var center: Vector3 = Vector3(1.0, 0.0, 1.0)
+	var position: Vector3 = center + Vector3(0.0, 0.0, 3.0)
+	for step: int in 120:
+		position += (
+			CombatGeometry.orbit_velocity(center, position, 3.0, 1.5, 1.0, 1.0 / 60.0) / 60.0
+		)
+	assert_float(CombatGeometry.flatten(position - center).length()).is_equal_approx(3.0, 0.001)
+
+
+func test_orbit_moves_at_the_given_speed() -> void:
+	var velocity: Vector3 = CombatGeometry.orbit_velocity(
+		Vector3.ZERO, Vector3(0.0, 0.0, 3.0), 3.0, 1.5, -1.0, 1.0 / 60.0
+	)
+	assert_float(velocity.length()).is_equal_approx(1.5, 0.01)
+
+
 func test_yaw_makes_node_look_at_direction() -> void:
 	var direction: Vector3 = Vector3(1.0, 0.0, 1.0).normalized()
 	var basis: Basis = Basis(Vector3.UP, CombatGeometry.yaw_for_direction(direction))

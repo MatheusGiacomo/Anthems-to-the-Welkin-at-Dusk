@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="MeleeBehaviorConfig" format=3]
+
+[ext_resource type="Script" path="res://enemies/melee_behavior_config.gd" id="1_behavior"]
+
+[resource]
+script = ExtResource("1_behavior")
+approach_distance = 6.0
+distance_hysteresis = 0.5
+caution_distance = 2.5
+caution_tolerance = 0.75
+run_speed = 5.5
+caution_speed = 1.8
+strafe_speed = 1.5
+time_to_lunge = 1.5
+strafe_flip_min = 2.0
+strafe_flip_max = 4.0
+reflect_lunge_delay = 0.5
+strike_reach = 1.4
+max_lunge_distance = 4.0
