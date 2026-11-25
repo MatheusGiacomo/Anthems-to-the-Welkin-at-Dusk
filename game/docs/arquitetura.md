@@ -29,6 +29,9 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 - `camera/fixed_camera.tscn` → `FixedCamera` (Camera3D ortográfica parada, `fixed_camera.gd`): enquadra a área que a cena pede e refaz o zoom quando a janela muda.
 - `ui/debug/debug_overlay.tscn` → `DebugOverlay` (CanvasLayer, `debug_overlay.gd`) → `Panel/Text` (`%Text`): vida, vulnerabilidade, escudo e ataque do player e inimigos vivos. Cada inimigo tem um `DebugLabel` (Label3D, `enemy_debug_label.gd`) com estado da IA, vida e medidor. F3 liga e desliga os dois.
 
+## Janela
+Base de 1920×1080, aberta maximizada (`window/size/mode` = 2) e redimensionável. O 2D estica com a janela (`canvas_items`, `expand`); a `FixedCamera` refaz o zoom do 3D a cada mudança de tamanho. Rodando de dentro do editor com o jogo embutido na aba Game, o tamanho é o da aba.
+
 ## Autoloads
 _Nenhum._
 
