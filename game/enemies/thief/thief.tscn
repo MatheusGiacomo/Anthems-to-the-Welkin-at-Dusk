@@ -162,7 +162,7 @@ attack = NodePath("../Dagger")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, 0)
 shape = SubResource("CapsuleShape3D_hurt")
 
-[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("body_mesh", "guard_mesh", "slash_mesh", "vulnerability", "guard", "attack")]
+[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("body_mesh", "guard_mesh", "slash_mesh", "vulnerability", "guard", "attack", "health")]
 script = ExtResource("12_visual")
 body_mesh = NodePath("../Visual/Body")
 guard_mesh = NodePath("../Visual/GuardMesh")
@@ -170,6 +170,7 @@ slash_mesh = NodePath("../Visual/SlashMesh")
 vulnerability = NodePath("../Vulnerability")
 guard = NodePath("../Guard")
 attack = NodePath("../Dagger")
+health = NodePath("../Health")
 
 [node name="Brain" type="Node" parent="." node_paths=PackedStringArray("chase_state", "shoot_state", "flee_state", "melee_chase_state", "caution_state", "lunge_state", "body", "locomotion", "vulnerability", "idle_state", "staggered_state")]
 script = ExtResource("13_brain")

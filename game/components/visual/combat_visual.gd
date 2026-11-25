@@ -1,7 +1,8 @@
 class_name CombatVisual
 extends Node
 ## Mostra o estado de combate num visual provisório: escudo visível quando erguido, arco do golpe
-## na fase ativa e cor do corpo no preparo do ataque e na vulnerabilidade. Só lê os componentes.
+## na fase ativa e cor do corpo no preparo do ataque, na vulnerabilidade e na morte. Só lê os
+## componentes.
 
 ## Malha do corpo, cuja cor muda conforme o estado (o material dela é duplicado no início).
 @export var body_mesh: MeshInstance3D
@@ -14,10 +15,14 @@ extends Node
 @export var guard: GuardComponent
 ## Opcional.
 @export var attack: MeleeAttackComponent
+## Opcional: sem ele, a morte não muda a cor.
+@export var health: HealthComponent
 ## Cor do corpo no preparo do ataque (o aviso do golpe).
 @export var windup_color: Color = Color(1.0, 0.6, 0.15)
 ## Cor do corpo enquanto vulnerável (atordoado).
 @export var vulnerable_color: Color = Color(1.0, 0.95, 0.3)
+## Cor do corpo depois da morte.
+@export var dead_color: Color = Color(0.25, 0.25, 0.25)
 
 var _material: StandardMaterial3D
 var _base_color: Color = Color.WHITE
@@ -46,8 +51,10 @@ func _process(_delta: float) -> void:
 		_material.albedo_color = _current_color()
 
 
-## Devolve a cor do corpo para o estado atual: vulnerável, preparando o golpe ou normal.
+## Devolve a cor do corpo para o estado atual: morto, vulnerável, preparando o golpe ou normal.
 func _current_color() -> Color:
+	if health != null and health.is_dead():
+		return dead_color
 	if vulnerability != null and vulnerability.is_vulnerable():
 		return vulnerable_color
 	if attack != null and attack.get_phase() == AttackCycle.Phase.WINDUP:
