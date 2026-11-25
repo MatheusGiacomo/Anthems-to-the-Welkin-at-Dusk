@@ -3,7 +3,7 @@
 Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer mudança nos itens abaixo.
 
 ## Visão geral
-- Jogo 3D low poly com câmera isométrica, ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD (o player olha para onde anda), atacar e bloquear (com parry) com os botões do mouse.
+- Jogo 3D low poly com câmera fixa de cima (ortográfica, inclinada), ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD (o player olha para onde anda), atacar e bloquear (com parry) com os botões do mouse.
 - O escopo chega em versões do MVP. **MVP V1 (atual): combate e jogabilidade** numa arena plana e fechada, sem props: movimento, ataque, escudo com parry, combo e vulnerabilidade do player; dois inimigos (capanga corpo a corpo e ladrão arqueiro) com spawn e IA; vida para todos, com reinício da arena quando o player morre.
 - Todo número de balanceamento é fictício e fica em `Resource` (`.tres`) ou `@export`, editável no inspetor.
 
@@ -22,11 +22,11 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `IsometricCamera` (alvo: `Player`); `Encounter` com cinco `SpawnPoint` (três capangas, dois ladrões); `DebugOverlay`. O `arena.gd` entrega a câmera ao player, dá o player como alvo do encontro e ao painel de debug, spawna os inimigos, trata o F5 e reinicia a arena quando o player morre.
+- `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `FixedCamera` (enquadra os 40×40 m de `view_bounds`); `Encounter` com cinco `SpawnPoint` (três capangas, dois ladrões); `DebugOverlay`. O `arena.gd` entrega a câmera ao player, dá o player como alvo do encontro e ao painel de debug, spawna os inimigos, trata o F5 e reinicia a arena quando o player morre.
 - `enemies/henchman/henchman.tscn` e `enemies/thief/thief.tscn` → `Enemy` (CharacterBody3D flutuante, `enemy.gd`) → os mesmos componentes do player, inclusive o `Knockback` (o ataque é `Sword` ou `Dagger`), `CombatVisual`, `DebugLabel` e `Brain` (`HenchmanBrain` ou `ThiefBrain`) com os estados como filhos. O `Visual` tem o modelo KayKit (`Barbarian` com a espada avulsa, ou `Rogue` com besta e faca), e há também `Animator` e `Loadout`. O ladrão tem ainda `Muzzle` (saída da flecha).
 - `enemies/projectiles/arrow.tscn` → `Arrow` (Node3D, `arrow.gd`) → `Model` (flecha do KayKit, girada para apontar em -Z); filha do `Encounter` depois do disparo.
 - `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (modelo `Knight` do KayKit, escala 0,8 e girado 180°, e o arco do golpe), `Locomotion`, `Health`, `Vulnerability`, `Guard`, `Sword` (MeleeAttackComponent), `HitBox`, `HurtBox`, `CombatVisual`, `Animator` (CharacterAnimator), `Loadout` (ModelLoadout: espada e escudo redondo) e `Knockback` (KnockbackComponent).
-- `camera/isometric_camera.tscn` → `IsometricCamera` (Camera3D ortográfica, `isometric_camera.gd`).
+- `camera/fixed_camera.tscn` → `FixedCamera` (Camera3D ortográfica parada, `fixed_camera.gd`): enquadra a área que a cena pede e refaz o zoom quando a janela muda.
 - `ui/debug/debug_overlay.tscn` → `DebugOverlay` (CanvasLayer, `debug_overlay.gd`) → `Panel/Text` (`%Text`): vida, vulnerabilidade, escudo e ataque do player e inimigos vivos. Cada inimigo tem um `DebugLabel` (Label3D, `enemy_debug_label.gd`) com estado da IA, vida e medidor. F3 liga e desliga os dois.
 
 ## Autoloads

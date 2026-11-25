@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://camera/fixed_camera.gd" id="1_camera"]
+
+[node name="FixedCamera" type="Camera3D"]
+projection = 1
+size = 30.0
+far = 200.0
+script = ExtResource("1_camera")

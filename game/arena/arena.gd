@@ -1,20 +1,24 @@
 class_name Arena
 extends Node3D
-## Cena principal do MVP V1: arena plana e fechada. Liga o player à câmera, ao encontro de
-## inimigos (que spawna ao abrir) e ao painel de debug, e reinicia a arena quando o player morre.
+## Arena de teste: plana e fechada, com a câmera fixa enquadrando tudo. Liga o player à câmera,
+## ao encontro de inimigos (que spawna ao abrir) e ao painel de debug, e reinicia a arena quando o
+## player morre.
 
 ## Segundos entre a morte do player e o reinício da arena.
 @export var restart_delay: float = 1.5
+## Área do mundo que a câmera enquadra (o chão da arena).
+@export var view_bounds: AABB = AABB(Vector3(-20.0, 0.0, -20.0), Vector3(40.0, 2.0, 40.0))
 
 @onready var player: Player = $Player
-@onready var camera: IsometricCamera = $IsometricCamera
+@onready var camera: FixedCamera = $FixedCamera
 @onready var encounter: Encounter = $Encounter
 @onready var debug_overlay: DebugOverlay = $DebugOverlay
 
 
-## Entrega a câmera ao player, dá o player como alvo do encontro, liga o painel de debug, spawna
-## os inimigos e passa a ouvir a morte do player.
+## Enquadra a arena, entrega a câmera ao player, dá o player como alvo do encontro, liga o painel
+## de debug, spawna os inimigos e passa a ouvir a morte do player.
 func _ready() -> void:
+	camera.frame(view_bounds)
 	player.camera = camera
 	encounter.target = player
 	debug_overlay.player = player

@@ -10,7 +10,7 @@ signal died
 
 ## Câmera usada no movimento relativo à tela; atribuída pela cena que tem o player. Sem câmera,
 ## "para frente" é -Z.
-var camera: IsometricCamera
+var camera: FixedCamera
 
 # Depois de o escudo quebrar ou ser interrompido, só ergue de novo com um novo clique: segurar o
 # botão não reergue sozinho quando a espera acaba (evita um parry perfeito sem intenção).

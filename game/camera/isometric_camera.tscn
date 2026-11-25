@@ -1,9 +1,0 @@
-[gd_scene format=3]
-
-[ext_resource type="Script" path="res://camera/isometric_camera.gd" id="1_camera"]
-
-[node name="IsometricCamera" type="Camera3D"]
-projection = 1
-size = 18.0
-far = 200.0
-script = ExtResource("1_camera")
