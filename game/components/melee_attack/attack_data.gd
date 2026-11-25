@@ -15,6 +15,9 @@ extends Resource
 @export var parryable: bool = true
 ## Se o golpe pode trombar com outro golpe ativo (choque de espadas).
 @export var can_clash: bool = true
+## Metros que o golpe empurra quem é atingido (0 = não empurra). Com o escudo defendendo, empurra
+## uma fração (`KnockbackComponent.blocked_scale`).
+@export var knockback_distance: float = 0.0
 
 @export_group("Tempo (corpo a corpo)")
 ## Segundos de preparo antes do golpe valer.

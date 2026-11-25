@@ -14,6 +14,7 @@ Regras puras (`RefCounted`, testáveis sem cena) envoltas por componentes-nó fi
 | `guard/GuardModel` | `guard/GuardComponent` | Escudo: vida, quebra, recarga, tempos, parry; config em `GuardConfig` |
 | `melee_attack/AttackCycle` | `melee_attack/MeleeAttackComponent` | Fases do ataque e intervalo; liga a HitBox só na fase de golpe |
 | `hit/HitResolver`, `hit/CombatGeometry` | `hit/HurtBox`, `hit/HitBox` | Resultado do golpe e onde cada efeito é aplicado |
+| `knockback/KnockbackRules` | `knockback/KnockbackComponent` | Empurrão de quem é atingido; o movimento fica com `LocomotionComponent.push` |
 
 Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, todos `Resource` editáveis no inspetor.
 
@@ -29,6 +30,7 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 - **Ataque:** fases `windup` → `active` → `recovery`; o próximo ataque só começa `get_cooldown()` segundos depois do início do anterior (o maior entre a duração e `1 / attacks_per_second`). A HitBox acerta cada HurtBox uma vez por golpe.
 - **Onde cada efeito é aplicado:** a HurtBox aplica no defensor (dano, pontos, desgaste do escudo, atordoamento no choque); a HitBox aplica no atacante (atordoamento por parry, guarda refletida e choque), a partir do resultado que a HurtBox devolve.
 - Quem já morreu ignora golpes (`IGNORED`).
+- **Empurrão (knockback):** o atingido é empurrado na direção em que o golpe viaja por `knockback_distance` do ataque × fração do resultado × `resistance` da entidade. Fração: 1 no `HIT`; `blocked_scale` (0,5) quando o escudo defende (`BLOCKED`, `GUARD_BROKEN`, `REFLECTED`); 0 no parry e no choque. A velocidade começa em `2 × distância / duration` e cai linearmente até zero em `duration` (0,15 s); nesse tempo a entidade não controla o movimento. Flechas não empurram (`knockback_distance` 0).
 
 ### Player (`player/player.gd`)
 - **Atacar** (`attack`): golpe para a frente (`sword_slash.tres`: 1,25 ataque/s, um a cada 0,8 s), só com o escudo abaixado. O olhar trava durante o ataque (`lock_facing_while_attacking`) e a velocidade cai para `attacking_multiplier`.
@@ -49,8 +51,25 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 
 ## Testes
 `test/unit/`: `vulnerability_model_test`, `health_component_test`, `guard_model_test`,
-`attack_cycle_test`, `hit_resolver_test`, `combat_geometry_test` e `hurt_box_test` (componentes
-reais, sem física).
+`attack_cycle_test`, `hit_resolver_test`, `combat_geometry_test`, `knockback_rules_test` e
+`hurt_box_test` (componentes reais, sem física).
+`test/scenes/knockback_test.gd`: o golpe do player afasta o capanga atingido.
 `test/unit/balance_invariants_test.gd`: lê os `.tres` e garante as duas restrições do MVP — um
 único inimigo (corpo a corpo ou arqueiro) não consegue combar o player, e o combo do player
 encadeia em todo inimigo. Ajuste de números que quebre uma delas reprova o check.
+
+## Onde ajustar os números
+| O quê | Arquivo | Campos |
+|---|---|---|
+| Ataque do player | `player/sword_slash.tres` | `attacks_per_second` (1,25 = um a cada 0,8 s), `windup`, `active`, `recovery`, `damage`, `vulnerability_points`, `knockback_distance` |
+| Movimento do player | `player/player_config.tres` | `move_speed`, `blocking_multiplier`, `attacking_multiplier`, travas do olhar, `perfect_parry_cooldown_scale` |
+| Escudo do player | `player/player_guard.tres` | `max_health`, `perfect_window` (parry), `full_regen_time`, `broken_lockout`, `release_lockout`, `arc_degrees` |
+| Vulnerabilidade (combo) | `player/player_vulnerability.tres`, `enemies/<inimigo>/<inimigo>_vulnerability.tres` | `threshold`, `duration`, `parried_duration`, `reflected_duration`, `clash_duration` |
+| Tempo da cautela até a investida | `enemies/henchman/henchman_behavior.tres`, `enemies/thief/thief_melee.tres` | `time_to_lunge`, `reflect_lunge_delay` |
+| Distâncias e velocidades da IA corpo a corpo | os mesmos dois | `approach_distance` (X), `caution_distance` (Y), `caution_tolerance`, `run_speed`, `caution_speed`, `strafe_speed`, `strike_reach`, `max_lunge_distance` |
+| Golpe da investida | `enemies/henchman/henchman_sword.tres`, `enemies/thief/thief_dagger.tres` | `windup` (preparo visível), `active`, `recovery`, `damage`, `knockback_distance` |
+| Tiro do ladrão | `enemies/thief/thief_ranged.tres`, `enemies/thief/thief_arrow.tres` | `draw_time`, `reload_time`, `arrow_speed`, `attack_distance`, `fight_chance`; dano e desgaste no `thief_arrow.tres` |
+| Vida | nó `Health` em `player/player.tscn`, `enemies/henchman/henchman.tscn`, `enemies/thief/thief.tscn` | `max_health` |
+| Reação ao empurrão | nó `Knockback` nas mesmas cenas | `duration`, `resistance`, `blocked_scale` |
+
+O `test/unit/balance_invariants_test.gd` reprova ajustes que deixam um inimigo "combar" o player ou que quebram o combo do player.

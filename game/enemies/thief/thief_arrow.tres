@@ -10,6 +10,7 @@ guard_damage = 35.0
 blockable = true
 parryable = false
 can_clash = false
+knockback_distance = 0.0
 windup = 0.0
 active = 0.0
 recovery = 0.0

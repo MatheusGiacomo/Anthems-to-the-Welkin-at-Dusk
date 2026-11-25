@@ -17,6 +17,7 @@
 [ext_resource type="Script" path="res://components/visual/character_animator.gd" id="15_animator"]
 [ext_resource type="Resource" path="res://player/player_animations.tres" id="16_animations"]
 [ext_resource type="Script" path="res://components/visual/model_loadout.gd" id="17_loadout"]
+[ext_resource type="Script" path="res://components/knockback/knockback_component.gd" id="95_knockback"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -130,3 +131,8 @@ hurt_box = NodePath("../HurtBox")
 script = ExtResource("17_loadout")
 model = NodePath("../Visual/Knight")
 accessories = Array[StringName]([&"1H_Sword", &"Round_Shield"])
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurt_box", "locomotion")]
+script = ExtResource("95_knockback")
+hurt_box = NodePath("../HurtBox")
+locomotion = NodePath("../Locomotion")

@@ -28,6 +28,7 @@
 [ext_resource type="Script" path="res://enemies/states/caution_state.gd" id="21_caution"]
 [ext_resource type="Script" path="res://enemies/states/lunge_state.gd" id="22_lunge"]
 [ext_resource type="Script" path="res://enemies/states/staggered_state.gd" id="23_staggered"]
+[ext_resource type="Script" path="res://components/knockback/knockback_component.gd" id="95_knockback"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -208,3 +209,8 @@ accessories = Array[StringName]([&"2H_Crossbow"])
 state_machine = NodePath("../Brain")
 alternate_states = Array[StringName]([&"MeleeChase", &"Caution", &"Lunge"])
 alternate_accessories = Array[StringName]([&"Knife"])
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurt_box", "locomotion")]
+script = ExtResource("95_knockback")
+hurt_box = NodePath("../HurtBox")
+locomotion = NodePath("../Locomotion")
