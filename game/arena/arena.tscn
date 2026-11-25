@@ -3,6 +3,10 @@
 [ext_resource type="Script" path="res://arena/arena.gd" id="1_arena"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="2_player"]
 [ext_resource type="PackedScene" path="res://camera/isometric_camera.tscn" id="3_camera"]
+[ext_resource type="Script" path="res://spawn/encounter.gd" id="4_encounter"]
+[ext_resource type="Script" path="res://spawn/spawn_point.gd" id="5_spawn_point"]
+[ext_resource type="PackedScene" path="res://enemies/henchman/henchman.tscn" id="6_henchman"]
+[ext_resource type="PackedScene" path="res://enemies/thief/thief.tscn" id="7_thief"]
 
 [sub_resource type="Environment" id="Environment_arena"]
 background_mode = 1
@@ -106,3 +110,36 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wall")
 
 [node name="IsometricCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_camera")]
 target = NodePath("../Player")
+
+[node name="Encounter" type="Node3D" parent="."]
+script = ExtResource("4_encounter")
+
+[node name="HenchmanWest" type="Marker3D" parent="Encounter"]
+transform = Transform3D(-0.780869, 0, -0.624695, 0, 1, 0, 0.624695, 0, -0.780869, -8, 0, -10)
+script = ExtResource("5_spawn_point")
+enemy_scene = ExtResource("6_henchman")
+aggro_radius = 10.0
+
+[node name="HenchmanEast" type="Marker3D" parent="Encounter"]
+transform = Transform3D(-0.780869, 0, 0.624695, 0, 1, 0, -0.624695, 0, -0.780869, 8, 0, -10)
+script = ExtResource("5_spawn_point")
+enemy_scene = ExtResource("6_henchman")
+aggro_radius = 10.0
+
+[node name="HenchmanSouth" type="Marker3D" parent="Encounter"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, -0, 0, 1, 0, 0, 13)
+script = ExtResource("5_spawn_point")
+enemy_scene = ExtResource("6_henchman")
+aggro_radius = 10.0
+
+[node name="ThiefWest" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0.393919, 0, -0.919145, 0, 1, 0, 0.919145, 0, 0.393919, -14, 0, 6)
+script = ExtResource("5_spawn_point")
+enemy_scene = ExtResource("7_thief")
+aggro_radius = 15.0
+
+[node name="ThiefEast" type="Marker3D" parent="Encounter"]
+transform = Transform3D(-0.209529, 0, 0.977802, 0, 1, 0, -0.977802, 0, -0.209529, 14, 0, -3)
+script = ExtResource("5_spawn_point")
+enemy_scene = ExtResource("7_thief")
+aggro_radius = 15.0

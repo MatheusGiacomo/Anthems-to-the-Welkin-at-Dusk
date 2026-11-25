@@ -22,7 +22,9 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `IsometricCamera` (alvo: `Player`). O `arena.gd` entrega a câmera ao player.
+- `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `IsometricCamera` (alvo: `Player`); `Encounter` com cinco `SpawnPoint` (três capangas, dois ladrões). O `arena.gd` entrega a câmera ao player, dá o player como alvo do encontro, spawna os inimigos e trata o F5.
+- `enemies/henchman/henchman.tscn` e `enemies/thief/thief.tscn` → `Enemy` (CharacterBody3D flutuante, `enemy.gd`) → os mesmos componentes do player (o ataque é `Sword` ou `Dagger`), `CombatVisual` e `Brain` (`HenchmanBrain` ou `ThiefBrain`) com os estados como filhos. O ladrão tem ainda `Muzzle` (saída da flecha) e o arco puxado em `Visual/BowDrawn`.
+- `enemies/projectiles/arrow.tscn` → `Arrow` (Node3D, `arrow.gd`), filha do `Encounter` depois do disparo.
 - `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (cápsula, "nariz" que mostra a frente, escudo e arco do golpe), `Locomotion`, `Health`, `Vulnerability`, `Guard`, `Sword` (MeleeAttackComponent), `HitBox`, `HurtBox`, `CombatVisual`.
 - `camera/isometric_camera.tscn` → `IsometricCamera` (Camera3D ortográfica, `isometric_camera.gd`).
 
@@ -30,7 +32,9 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 _Nenhum._
 
 ## Sinais entre sistemas
-_Nenhum. Formato: `emissor.sinal` → `receptor._handler` — propósito._
+Formato: `emissor.sinal` → `receptor._handler` — propósito. Sinais internos de cada sistema estão nas notas de `docs/sistemas/`.
+- `Enemy.died` → `Encounter._on_enemy_died` — contagem de vivos.
+- `HurtBox.hit_received` → `Enemy._on_hurt_box_hit_received` — inimigo atingido fora de combate fica agressivo contra quem bateu.
 
 ## Input map
 | Ação | Entrada | Uso |
