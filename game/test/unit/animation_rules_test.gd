@@ -61,6 +61,38 @@ func test_drawing_then_shot_then_guard() -> void:
 	assert_int(_pick(state)).is_equal(AnimationRules.Clip.GUARD_HIT)
 
 
+func test_guard_while_moving_keeps_legs_on_locomotion() -> void:
+	var cases: Dictionary[Vector3, AnimationRules.Clip] = {
+		FACING * 1.8: AnimationRules.Clip.WALK,
+		-FACING * 1.8: AnimationRules.Clip.WALK_BACKWARD,
+		Vector3.RIGHT * 1.5: AnimationRules.Clip.STRAFE_RIGHT,
+		Vector3.LEFT * 1.5: AnimationRules.Clip.STRAFE_LEFT,
+	}
+	for velocity: Vector3 in cases:
+		var state: AnimationState = _state(velocity)
+		state.guarding = true
+		assert_int(_pick(state)).is_equal(cases[velocity])
+		assert_bool(AnimationRules.has_overlay(state)).is_true()
+		assert_int(AnimationRules.overlay_clip(state)).is_equal(AnimationRules.Clip.GUARD)
+
+
+func test_guard_hit_while_moving_goes_to_the_upper_layer() -> void:
+	var state: AnimationState = _state(FACING * 1.8)
+	state.guarding = true
+	state.guard_hit = true
+	assert_int(_pick(state)).is_equal(AnimationRules.Clip.WALK)
+	assert_int(AnimationRules.overlay_clip(state)).is_equal(AnimationRules.Clip.GUARD_HIT)
+
+
+func test_overlay_needs_guard_and_yields_to_higher_priorities() -> void:
+	assert_bool(AnimationRules.has_overlay(_state(FACING * 1.8))).is_false()
+	for flag: String in ["dead", "staggered", "attacking", "drawing", "recently_shot"]:
+		var state: AnimationState = _state(FACING * 1.8)
+		state.guarding = true
+		state.set(flag, true)
+		assert_bool(AnimationRules.has_overlay(state)).override_failure_message(flag).is_false()
+
+
 func test_locomotion_by_direction_and_speed() -> void:
 	assert_int(_pick(_state())).is_equal(AnimationRules.Clip.IDLE)
 	assert_int(_pick(_state(FACING * 0.1))).is_equal(AnimationRules.Clip.IDLE)

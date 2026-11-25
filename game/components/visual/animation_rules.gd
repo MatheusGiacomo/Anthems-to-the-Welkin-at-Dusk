@@ -19,8 +19,9 @@ enum Clip {
 }
 
 
-## Devolve o clipe do estado, nesta prioridade: morte, atordoado, golpe, puxada, tiro, guarda
-## (defesa ou erguida) e, por fim, a locomoção.
+## Devolve o clipe do corpo inteiro (a camada de baixo), nesta prioridade: morte, atordoado, golpe,
+## puxada, tiro e, por fim, a locomoção. Com a guarda erguida e parado, devolve a guarda (defesa
+## ou erguida); em movimento, a locomoção, e a guarda vai para a camada de cima (`has_overlay`).
 static func pick(state: AnimationState, animations: AnimationSet) -> Clip:
 	if state.dead:
 		return Clip.DEATH
@@ -32,9 +33,25 @@ static func pick(state: AnimationState, animations: AnimationSet) -> Clip:
 		return Clip.AIM
 	if state.recently_shot:
 		return Clip.SHOOT
-	if state.guarding:
-		return Clip.GUARD_HIT if state.guard_hit else Clip.GUARD
-	return locomotion_clip(state.velocity, state.facing, animations)
+	var locomotion: Clip = locomotion_clip(state.velocity, state.facing, animations)
+	if state.guarding and locomotion == Clip.IDLE:
+		return overlay_clip(state)
+	return locomotion
+
+
+## Devolve se a parte de cima toca a guarda por cima da camada de baixo: guarda erguida e nada de
+## prioridade maior (morte, atordoado, golpe, puxada, tiro).
+static func has_overlay(state: AnimationState) -> bool:
+	if state.dead or state.staggered or state.attacking:
+		return false
+	if state.drawing or state.recently_shot:
+		return false
+	return state.guarding
+
+
+## Devolve o clipe da guarda para a parte de cima: defesa se acabou de defender, senão erguida.
+static func overlay_clip(state: AnimationState) -> Clip:
+	return Clip.GUARD_HIT if state.guard_hit else Clip.GUARD
 
 
 ## Devolve o clipe de locomoção pela velocidade em relação à frente: parado abaixo de

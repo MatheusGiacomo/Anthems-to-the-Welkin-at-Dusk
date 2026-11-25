@@ -36,6 +36,11 @@ extends Resource
 ## Segundos de transição entre clipes.
 @export var blend_time: float = 0.12
 
+@export_group("Camadas")
+## Osso a partir do qual o corpo é "parte de cima": ele e os descendentes tocam a guarda enquanto
+## as pernas tocam a locomoção.
+@export var upper_body_root: StringName = &"spine"
+
 
 ## Devolve o nome do clipe de `clip` (`AnimationRules.Clip`).
 func clip_name(clip: AnimationRules.Clip) -> StringName:
