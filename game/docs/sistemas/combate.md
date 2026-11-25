@@ -38,7 +38,7 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 - **Ao abaixar o escudo**, por qualquer motivo, o intervalo do ataque recomeça inteiro; depois de um parry perfeito, recomeça em `perfect_parry_cooldown_scale` (metade).
 - Depois de o escudo **quebrar ou ser interrompido**, só ergue de novo com um novo clique (segurar não reergue sozinho), para o parry perfeito não acontecer sem intenção.
 - **Vulnerável** (`player_vulnerability.tres`, 0,6 s): não age; o ataque é cancelado e o escudo abaixado.
-- **Morte**: para de lutar, a HurtBox deixa de receber golpes e o player emite `died`; a arena acalma os inimigos e recarrega a cena depois de `restart_delay` (1,5 s).
+- **Morte**: para de lutar, a HurtBox deixa de receber golpes e o player emite `died`; a `LevelSequence` acalma os inimigos e recarrega a fase depois de `restart_delay` (1 s; na arena de teste, 1,5 s).
 - Visual provisório (`CombatVisual`): escudo visível quando erguido, arco branco na fase de golpe, corpo laranja no preparo, amarelo quando vulnerável e cinza morto (o mesmo para os inimigos).
 
 ## Sinais

@@ -11,10 +11,11 @@ Colocar inimigos na cena a partir de marcadores e decidir quando eles ficam agre
 ## Regras
 - `spawn_all()`: para cada `SpawnPoint` com cena, instancia o inimigo (nomeado `<ponto>Enemy`), coloca-o parado na posição e na direção (-Z) do ponto e registra o raio de agressão.
 - **Agressão**: na hora, se `aggro_on_spawn`; quando o alvo entra em `aggro_radius` (0 desliga); ou quando o inimigo é atingido (contra quem bateu, regra do `Enemy`).
-- `respawn_all()`: remove inimigos e projéteis e spawna de novo. Na arena, tecla F5 (`debug_respawn_enemies`).
+- `respawn_all()`: remove inimigos e projéteis e spawna de novo. Nas fases e na arena, tecla F5 (`debug_respawn_enemies`).
 - `calm_all()`: todos largam o alvo e a agressão por proximidade é desligada (o alvo vira nulo).
 - `all_enemies_died` é emitido quando morre o último inimigo vivo (remover com `clear` não conta).
-- Arena do V1 (`arena/arena.tscn`): três capangas (raio 10 m) e dois ladrões (raio 15 m), todos virados para o centro, onde o player começa.
+- Fases (`levels/level_0N.tscn`): inimigos ao longo do caminho, virados para o oeste (de onde o player vem); ver `fases.md`.
+- Arena de teste (`arena/arena.tscn`): três capangas (raio 10 m) e dois ladrões (raio 15 m), todos virados para o centro, onde o player começa.
 
 ## Sinais
 - `Encounter.enemy_spawned(enemy)`, `all_enemies_died`.

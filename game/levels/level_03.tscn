@@ -1,0 +1,338 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_level"]
+[ext_resource type="Script" path="res://spawn/encounter.gd" id="2_encounter"]
+[ext_resource type="Script" path="res://spawn/spawn_point.gd" id="3_spawn_point"]
+[ext_resource type="PackedScene" path="res://enemies/henchman/henchman.tscn" id="4_henchman"]
+[ext_resource type="PackedScene" path="res://enemies/thief/thief.tscn" id="5_thief"]
+[ext_resource type="PackedScene" path="res://levels/props/tree.tscn" id="6_tree"]
+[ext_resource type="PackedScene" path="res://levels/props/rock.tscn" id="7_rock"]
+[ext_resource type="PackedScene" path="res://levels/level_exit.tscn" id="8_exit"]
+
+[sub_resource type="Environment" id="Environment_level"]
+background_mode = 1
+background_color = Color(0.08, 0.08, 0.11, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.6, 0.68, 1)
+ambient_light_energy = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.36, 0.46, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.42, 0.33, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_path"]
+albedo_color = Color(0.55, 0.45, 0.32, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0"]
+size = Vector3(44, 1, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_1"]
+material = SubResource("Mat_floor")
+size = Vector3(44, 1, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+size = Vector3(4, 1, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_3"]
+material = SubResource("Mat_floor")
+size = Vector3(4, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+size = Vector3(46, 1.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_5"]
+material = SubResource("Mat_wall")
+size = Vector3(46, 1.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6"]
+size = Vector3(1, 1.5, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_7"]
+material = SubResource("Mat_wall")
+size = Vector3(1, 1.5, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8"]
+size = Vector3(1, 1.5, 9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_9"]
+material = SubResource("Mat_wall")
+size = Vector3(1, 1.5, 9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_path_10"]
+material = SubResource("Mat_path")
+size = Vector3(18.5, 0.02, 4.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_path_11"]
+material = SubResource("Mat_path")
+size = Vector3(14.5, 0.02, 4.5)
+
+[node name="Level03" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_level")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.409576, 0.286788, 0, 0.573576, 0.819152, -0.5, -0.709406, 0.496732, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/Floor"]
+shape = SubResource("BoxShape3D_0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground/Floor"]
+mesh = SubResource("BoxMesh_floor_1")
+
+[node name="ExitFloor" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -0.5, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/ExitFloor"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground/ExitFloor"]
+mesh = SubResource("BoxMesh_floor_3")
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="WallNorth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -12.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallNorth"]
+shape = SubResource("BoxShape3D_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallNorth"]
+mesh = SubResource("BoxMesh_wall_5")
+
+[node name="WallSouth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 12.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallSouth"]
+shape = SubResource("BoxShape3D_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallSouth"]
+mesh = SubResource("BoxMesh_wall_5")
+
+[node name="WallWest" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 0.75, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallWest"]
+shape = SubResource("BoxShape3D_6")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallWest"]
+mesh = SubResource("BoxMesh_wall_7")
+
+[node name="WallEastNorth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 0.75, -7.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallEastNorth"]
+shape = SubResource("BoxShape3D_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallEastNorth"]
+mesh = SubResource("BoxMesh_wall_9")
+
+[node name="WallEastSouth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 0.75, 7.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallEastSouth"]
+shape = SubResource("BoxShape3D_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallEastSouth"]
+mesh = SubResource("BoxMesh_wall_9")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Path1" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.01, 0)
+mesh = SubResource("BoxMesh_path_10")
+
+[node name="Path2" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 0.01, 0)
+mesh = SubResource("BoxMesh_path_11")
+
+[node name="Tree1" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.583, 0, 0.6541, 0, 0.8762, 0, -0.6541, 0, 0.583, -21.3144, 0, -10.9469)
+
+[node name="Tree2" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.3058, 0, -0.992, 0, 1.0381, 0, 0.992, 0, 0.3058, -21.5842, 0, -7.595)
+
+[node name="Tree3" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.9431, 0, -0.7375, 0, 1.1972, 0, 0.7375, 0, 0.9431, -20.5962, 0, -5.0284)
+
+[node name="Tree4" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.9048, 0, -0.8247, 0, 1.2242, 0, 0.8247, 0, -0.9048, -17.743, 0, -10.4947)
+
+[node name="Tree5" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.7439, 0, -0.7044, 0, 1.0245, 0, 0.7044, 0, 0.7439, -17.5454, 0, -8.4831)
+
+[node name="Tree6" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7923, 0, 0.7398, 0, 1.084, 0, -0.7398, 0, -0.7923, -17.848, 0, -5.2388)
+
+[node name="Tree7" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.1514, 0, 0.2701, 0, 1.1826, 0, -0.2701, 0, -1.1514, -17.4424, 0, 10.4856)
+
+[node name="Tree8" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.0976, 0, -0.88, 0, 0.8854, 0, 0.88, 0, 0.0976, -14.9118, 0, -11.2581)
+
+[node name="Tree9" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(1.1567, 0, 0.316, 0, 1.1991, 0, -0.316, 0, 1.1567, -14.6393, 0, -8.1074)
+
+[node name="Tree10" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.1723, 0, 0.2673, 0, 1.2024, 0, -0.2673, 0, -1.1723, -15.547, 0, -4.8626)
+
+[node name="Tree11" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.636, 0, 0.5892, 0, 0.867, 0, -0.5892, 0, -0.636, -15.5623, 0, 6.6369)
+
+[node name="Tree12" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.675, 0, 0.8536, 0, 1.0883, 0, -0.8536, 0, 0.675, -11.524, 0, -11.1467)
+
+[node name="Tree13" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.2369, 0, -0.1021, 0, 1.2411, 0, 0.1021, 0, -1.2369, -11.9916, 0, -5.0826)
+
+[node name="Tree14" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.3258, 0, 1.0733, 0, 1.1217, 0, -1.0733, 0, -0.3258, -11.861, 0, 7.1586)
+
+[node name="Tree15" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.3934, 0, -1.0491, 0, 1.1204, 0, 1.0491, 0, -0.3934, -12.1769, 0, 10.2483)
+
+[node name="Tree16" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7313, 0, 0.6756, 0, 0.9956, 0, -0.6756, 0, -0.7313, -8.444, 0, -11.2987)
+
+[node name="Tree17" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.0589, 0, 0.4709, 0, 1.1589, 0, -0.4709, 0, -1.0589, -9.2248, 0, -8.157)
+
+[node name="Tree18" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.0977, 0, 0.4093, 0, 1.1715, 0, -0.4093, 0, -1.0977, -9.5677, 0, -4.9169)
+
+[node name="Tree19" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.8059, 0, -0.5657, 0, 0.9847, 0, 0.5657, 0, -0.8059, -9.1995, 0, 7.4002)
+
+[node name="Tree20" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.0353, 0, -0.236, 0, 1.0619, 0, 0.236, 0, -1.0353, -8.8197, 0, 10.4619)
+
+[node name="Tree21" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.0843, 0, -0.4472, 0, 1.1729, 0, 0.4472, 0, -1.0843, -6.371, 0, -10.6319)
+
+[node name="Tree22" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.9077, 0, 0.3964, 0, 0.9905, 0, -0.3964, 0, -0.9077, 9.4253, 0, -11.4966)
+
+[node name="Tree23" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.6508, 0, 0.822, 0, 1.0485, 0, -0.822, 0, -0.6508, 11.8563, 0, -10.6386)
+
+[node name="Tree24" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.764, 0, 0.7411, 0, 1.0643, 0, -0.7411, 0, -0.764, 12.2435, 0, -8.0954)
+
+[node name="Tree25" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.7475, 0, 0.97, 0, 1.2246, 0, -0.97, 0, 0.7475, 12.2342, 0, -5.5141)
+
+[node name="Tree26" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.8608, 0, 0.231, 0, 0.8913, 0, -0.231, 0, 0.8608, 12.4648, 0, 10.351)
+
+[node name="Tree27" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7786, 0, -0.4242, 0, 0.8867, 0, 0.4242, 0, -0.7786, 15.1053, 0, -11.5941)
+
+[node name="Tree28" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.5818, 0, -0.6847, 0, 0.8985, 0, 0.6847, 0, 0.5818, 14.5192, 0, -7.5434)
+
+[node name="Tree29" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.521, 0, -1.0471, 0, 1.1695, 0, 1.0471, 0, 0.521, 15.4127, 0, -4.7918)
+
+[node name="Tree30" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.6554, 0, 0.6833, 0, 0.9469, 0, -0.6833, 0, 0.6554, 15.5215, 0, 6.4734)
+
+[node name="Tree31" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.9965, 0, -0.0319, 0, 0.997, 0, 0.0319, 0, -0.9965, 14.6157, 0, 9.7)
+
+[node name="Tree32" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.0005, 0, -1.2392, 0, 1.2392, 0, 1.2392, 0, 0.0005, 17.876, 0, -11.1797)
+
+[node name="Tree33" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(1.0515, 0, 0.3843, 0, 1.1195, 0, -0.3843, 0, 1.0515, 17.8954, 0, -7.7031)
+
+[node name="Tree34" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.6315, 0, -0.6248, 0, 0.8883, 0, 0.6248, 0, -0.6315, 18.0205, 0, -5.0195)
+
+[node name="Tree35" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.0467, 0, 0.4164, 0, 1.1265, 0, -0.4164, 0, -1.0467, 17.7208, 0, 6.639)
+
+[node name="Tree36" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.7394, 0, 0.7925, 0, 1.0839, 0, -0.7925, 0, 0.7394, 18.5441, 0, 9.755)
+
+[node name="Tree37" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.5159, 0, 0.7604, 0, 0.9189, 0, -0.7604, 0, -0.5159, 20.7206, 0, -11.3389)
+
+[node name="Tree38" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.0975, 0, -1.0373, 0, 1.0418, 0, 1.0373, 0, 0.0975, 20.8326, 0, -8.2135)
+
+[node name="Tree39" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.6553, 0, -0.8108, 0, 1.0425, 0, 0.8108, 0, 0.6553, 21.1188, 0, -5.0383)
+
+[node name="Tree40" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.5913, 0, 1.0345, 0, 1.1916, 0, -1.0345, 0, 0.5913, 20.6755, 0, 6.6817)
+
+[node name="Tree41" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(1.1075, 0, -0.4446, 0, 1.1934, 0, 0.4446, 0, 1.1075, 20.6905, 0, 9.6275)
+
+[node name="Rock42" parent="Props" instance=ExtResource("7_rock")]
+transform = Transform3D(-1.0161, 0, -0.8198, 0, 1.3056, 0, 0.8198, 0, -1.0161, 6.5053, 0, 2.8679)
+
+[node name="Rock43" parent="Props" instance=ExtResource("7_rock")]
+transform = Transform3D(-0.9299, 0, 0.7746, 0, 1.2103, 0, -0.7746, 0, -0.9299, -2.2132, 0, 3.2139)
+
+[node name="Rock44" parent="Props" instance=ExtResource("7_rock")]
+transform = Transform3D(-0.6924, 0, -1.081, 0, 1.2838, 0, 1.081, 0, -0.6924, -2.2132, 0, -3.2139)
+
+[node name="Rock45" parent="Props" instance=ExtResource("7_rock")]
+transform = Transform3D(-1.0506, 0, 0.3462, 0, 1.1062, 0, -0.3462, 0, -1.0506, 6.2132, 0, -3.2139)
+
+[node name="Encounter" type="Node3D" parent="."]
+script = ExtResource("2_encounter")
+
+[node name="HenchmanNorth" type="Marker3D" parent="Encounter"]
+transform = Transform3D(-0.2873, 0, 0.9578, 0, 1, 0, -0.9578, 0, -0.2873, 0, 0, -4)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("4_henchman")
+aggro_radius = 11
+
+[node name="HenchmanSouth" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0.2873, 0, 0.9578, 0, 1, 0, -0.9578, 0, 0.2873, 0, 0, 4)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("4_henchman")
+aggro_radius = 11
+
+[node name="HenchmanCenter" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 0)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("4_henchman")
+aggro_radius = 11
+
+[node name="ThiefNorth" type="Marker3D" parent="Encounter"]
+transform = Transform3D(-0.4472, 0, 0.8944, 0, 1, 0, -0.8944, 0, -0.4472, 9, 0, -5)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("5_thief")
+aggro_radius = 14
+
+[node name="ThiefSouth" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0.4472, 0, 0.8944, 0, 1, 0, -0.8944, 0, 0.4472, 9, 0, 5)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("5_thief")
+aggro_radius = 14
+
+[node name="PlayerStart" type="Marker3D" parent="."]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -20, 0, 0)
+
+[node name="Exit" parent="." instance=ExtResource("8_exit")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3, 0, 0)
+opening_width = 6

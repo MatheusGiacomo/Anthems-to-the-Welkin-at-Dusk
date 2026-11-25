@@ -1,0 +1,282 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://levels/level.gd" id="1_level"]
+[ext_resource type="Script" path="res://spawn/encounter.gd" id="2_encounter"]
+[ext_resource type="Script" path="res://spawn/spawn_point.gd" id="3_spawn_point"]
+[ext_resource type="PackedScene" path="res://enemies/henchman/henchman.tscn" id="4_henchman"]
+[ext_resource type="PackedScene" path="res://enemies/thief/thief.tscn" id="5_thief"]
+[ext_resource type="PackedScene" path="res://levels/props/tree.tscn" id="6_tree"]
+[ext_resource type="PackedScene" path="res://levels/props/rock.tscn" id="7_rock"]
+[ext_resource type="PackedScene" path="res://levels/level_exit.tscn" id="8_exit"]
+
+[sub_resource type="Environment" id="Environment_level"]
+background_mode = 1
+background_color = Color(0.08, 0.08, 0.11, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.6, 0.68, 1)
+ambient_light_energy = 0.7
+
+[sub_resource type="StandardMaterial3D" id="Mat_floor"]
+albedo_color = Color(0.3, 0.4, 0.26, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_wall"]
+albedo_color = Color(0.42, 0.33, 0.25, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_path"]
+albedo_color = Color(0.55, 0.45, 0.32, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0"]
+size = Vector3(44, 1, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_1"]
+material = SubResource("Mat_floor")
+size = Vector3(44, 1, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2"]
+size = Vector3(4, 1, 6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_3"]
+material = SubResource("Mat_floor")
+size = Vector3(4, 1, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4"]
+size = Vector3(46, 1.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_5"]
+material = SubResource("Mat_wall")
+size = Vector3(46, 1.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6"]
+size = Vector3(1, 1.5, 24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_7"]
+material = SubResource("Mat_wall")
+size = Vector3(1, 1.5, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8"]
+size = Vector3(1, 1.5, 9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_9"]
+material = SubResource("Mat_wall")
+size = Vector3(1, 1.5, 9)
+
+[sub_resource type="BoxMesh" id="BoxMesh_path_10"]
+material = SubResource("Mat_path")
+size = Vector3(49, 0.02, 5)
+
+[node name="Level01" type="Node3D"]
+script = ExtResource("1_level")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_level")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.409576, 0.286788, 0, 0.573576, 0.819152, -0.5, -0.709406, 0.496732, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="Floor" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/Floor"]
+shape = SubResource("BoxShape3D_0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground/Floor"]
+mesh = SubResource("BoxMesh_floor_1")
+
+[node name="ExitFloor" type="StaticBody3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -0.5, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/ExitFloor"]
+shape = SubResource("BoxShape3D_2")
+
+[node name="Mesh" type="MeshInstance3D" parent="Ground/ExitFloor"]
+mesh = SubResource("BoxMesh_floor_3")
+
+[node name="Walls" type="Node3D" parent="."]
+
+[node name="WallNorth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -12.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallNorth"]
+shape = SubResource("BoxShape3D_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallNorth"]
+mesh = SubResource("BoxMesh_wall_5")
+
+[node name="WallSouth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 12.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallSouth"]
+shape = SubResource("BoxShape3D_4")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallSouth"]
+mesh = SubResource("BoxMesh_wall_5")
+
+[node name="WallWest" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.5, 0.75, 0)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallWest"]
+shape = SubResource("BoxShape3D_6")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallWest"]
+mesh = SubResource("BoxMesh_wall_7")
+
+[node name="WallEastNorth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 0.75, -7.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallEastNorth"]
+shape = SubResource("BoxShape3D_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallEastNorth"]
+mesh = SubResource("BoxMesh_wall_9")
+
+[node name="WallEastSouth" type="StaticBody3D" parent="Walls"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.5, 0.75, 7.5)
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Walls/WallEastSouth"]
+shape = SubResource("BoxShape3D_8")
+
+[node name="Mesh" type="MeshInstance3D" parent="Walls/WallEastSouth"]
+mesh = SubResource("BoxMesh_wall_9")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Path1" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("BoxMesh_path_10")
+
+[node name="Tree1" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7189, 0, 0.7373, 0, 1.0298, 0, -0.7373, 0, -0.7189, -21.4388, 0, -10.5831)
+
+[node name="Tree2" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.673, 0, -0.7706, 0, 1.0231, 0, 0.7706, 0, 0.673, -20.8181, 0, -7.2535)
+
+[node name="Tree3" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-1.2083, 0, 0.2196, 0, 1.2281, 0, -0.2196, 0, -1.2083, -20.6853, 0, -4.7975)
+
+[node name="Tree4" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.9505, 0, -0.4423, 0, 1.0483, 0, 0.4423, 0, -0.9505, -21.3401, 0, 9.3065)
+
+[node name="Tree5" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.6076, 0, 0.6066, 0, 0.8586, 0, -0.6066, 0, -0.6076, -17.9203, 0, -11.323)
+
+[node name="Tree6" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.1509, 0, -1.1844, 0, 1.194, 0, 1.1844, 0, 0.1509, -17.1949, 0, -7.5323)
+
+[node name="Tree7" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.8359, 0, -0.8172, 0, 1.169, 0, 0.8172, 0, -0.8359, -13.7846, 0, -10.9937)
+
+[node name="Tree8" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.9496, 0, 0.3131, 0, 0.9999, 0, -0.3131, 0, 0.9496, -14.3028, 0, -7.9924)
+
+[node name="Tree9" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7835, 0, 0.7003, 0, 1.0509, 0, -0.7003, 0, -0.7835, -13.9559, 0, 9.9798)
+
+[node name="Tree10" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.8887, 0, -0.5695, 0, 1.0555, 0, 0.5695, 0, -0.8887, -10.2215, 0, -10.6754)
+
+[node name="Tree11" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(1.1422, 0, 0.464, 0, 1.2328, 0, -0.464, 0, 1.1422, -10.257, 0, -7.5066)
+
+[node name="Tree12" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.6116, 0, 0.7765, 0, 0.9884, 0, -0.7765, 0, -0.6116, -7.316, 0, -11.3602)
+
+[node name="Tree13" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.1678, 0, 0.9268, 0, 0.9418, 0, -0.9268, 0, -0.1678, -7.3538, 0, -7.4518)
+
+[node name="Tree14" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.6729, 0, -0.6704, 0, 0.9498, 0, 0.6704, 0, 0.6729, -7.1923, 0, 8.8999)
+
+[node name="Tree15" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7225, 0, -0.7769, 0, 1.061, 0, 0.7769, 0, -0.7225, -4.4686, 0, -10.8502)
+
+[node name="Tree16" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7112, 0, 0.7582, 0, 1.0395, 0, -0.7582, 0, -0.7112, -4.3982, 0, -7.8725)
+
+[node name="Tree17" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7109, 0, -0.888, 0, 1.1375, 0, 0.888, 0, -0.7109, -3.8732, 0, 9.7804)
+
+[node name="Tree18" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.8867, 0, 0.8672, 0, 1.2402, 0, -0.8672, 0, -0.8867, -1.0077, 0, -10.7545)
+
+[node name="Tree19" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.7748, 0, 0.7529, 0, 1.0803, 0, -0.7529, 0, -0.7748, -0.2426, 0, -7.5801)
+
+[node name="Tree20" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.6458, 0, 0.5579, 0, 0.8534, 0, -0.5579, 0, -0.6458, -0.8276, 0, 9.9271)
+
+[node name="Tree21" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.273, 0, -1.0982, 0, 1.1316, 0, 1.0982, 0, 0.273, 3.3546, 0, -7.5157)
+
+[node name="Tree22" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(1.0243, 0, 0.6439, 0, 1.2099, 0, -0.6439, 0, 1.0243, 2.9991, 0, 9.1553)
+
+[node name="Tree23" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.6909, 0, -0.7029, 0, 0.9856, 0, 0.7029, 0, 0.6909, 5.6217, 0, -11.359)
+
+[node name="Tree24" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.796, 0, -0.5821, 0, 0.9861, 0, 0.5821, 0, -0.796, 9.2556, 0, -10.6891)
+
+[node name="Tree25" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.509, 0, -0.7472, 0, 0.9041, 0, 0.7472, 0, 0.509, 9.3495, 0, -7.1591)
+
+[node name="Tree26" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.7461, 0, -0.8951, 0, 1.1652, 0, 0.8951, 0, 0.7461, 9.6614, 0, -4.6749)
+
+[node name="Tree27" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.5528, 0, -1.0876, 0, 1.22, 0, 1.0876, 0, 0.5528, 9.2685, 0, 8.8981)
+
+[node name="Tree28" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.1834, 0, -1.103, 0, 1.1182, 0, 1.103, 0, -0.1834, 12.9493, 0, -11.2674)
+
+[node name="Tree29" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.5677, 0, 0.9548, 0, 1.1108, 0, -0.9548, 0, -0.5677, 16.8911, 0, -11.2472)
+
+[node name="Tree30" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.2902, 0, -1.0872, 0, 1.1253, 0, 1.0872, 0, 0.2902, 15.9336, 0, 9.0582)
+
+[node name="Tree31" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.8326, 0, 0.2927, 0, 0.8825, 0, -0.2927, 0, -0.8326, 19.9942, 0, -11.2891)
+
+[node name="Tree32" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(0.9858, 0, 0.7293, 0, 1.2263, 0, -0.7293, 0, 0.9858, 19.5369, 0, -7.0199)
+
+[node name="Tree33" parent="Props" instance=ExtResource("6_tree")]
+transform = Transform3D(-0.9198, 0, -0.2276, 0, 0.9475, 0, 0.2276, 0, -0.9198, 19.8531, 0, 9.4948)
+
+[node name="Encounter" type="Node3D" parent="."]
+script = ExtResource("2_encounter")
+
+[node name="HenchmanRoad" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -6, 0, -1)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("4_henchman")
+aggro_radius = 8
+
+[node name="HenchmanBridge" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 5, 0, 1.5)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("4_henchman")
+aggro_radius = 8
+
+[node name="ThiefEnd" type="Marker3D" parent="Encounter"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 15, 0, 0)
+script = ExtResource("3_spawn_point")
+enemy_scene = ExtResource("5_thief")
+aggro_radius = 13
+
+[node name="PlayerStart" type="Marker3D" parent="."]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -20, 0, 0)
+
+[node name="Exit" parent="." instance=ExtResource("8_exit")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.3, 0, 0)
+opening_width = 6
