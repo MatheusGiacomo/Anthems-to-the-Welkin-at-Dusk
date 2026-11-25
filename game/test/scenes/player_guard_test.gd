@@ -17,7 +17,13 @@ func test_raised_guard_blocks_henchman_lunge() -> void:
 	runner.simulate_action_press("block")
 	await CombatTestArena.await_physics_frames(get_tree(), 2)
 	enemy.aggro(player)
+	var lost_presses: int = 0
 	for frame: int in MAX_WAIT_PHYSICS_FRAMES:
+		# Se a janela de teste perde o foco, o Godot solta as ações pressionadas; o escudo
+		# precisa continuar erguido para o teste medir a defesa, não o foco da janela.
+		if not Input.is_action_pressed("block"):
+			lost_presses += 1
+			Input.action_press("block")
 		# Sem câmera o player não mira: vira-o para o capanga, que circula na cautela.
 		var to_enemy: Vector3 = CombatGeometry.direction_on_ground(
 			player.global_position, enemy.global_position
@@ -27,5 +33,7 @@ func test_raised_guard_blocks_henchman_lunge() -> void:
 		if blocks[0] > 0:
 			break
 	runner.simulate_action_release("block")
-	assert_int(blocks[0]).is_equal(1)
+	Input.action_release("block")
+	var context: String = "defesas %d, botão solto %d vez(es)" % [blocks[0], lost_presses]
+	assert_int(blocks[0]).override_failure_message(context).is_equal(1)
 	assert_float(player.health.current_health).is_equal_approx(player.health.max_health, 0.001)

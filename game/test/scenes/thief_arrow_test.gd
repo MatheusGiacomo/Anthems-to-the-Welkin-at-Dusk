@@ -17,11 +17,19 @@ func test_raised_guard_blocks_arrow() -> void:
 	runner.simulate_action_press("block")
 	await CombatTestArena.await_physics_frames(get_tree(), 2)
 	enemy.aggro(player)
+	var lost_presses: int = 0
 	for frame: int in MAX_WAIT_PHYSICS_FRAMES:
+		# Se a janela de teste perde o foco, o Godot solta as ações pressionadas; o escudo
+		# precisa continuar erguido para o teste medir a defesa, não o foco da janela.
+		if not Input.is_action_pressed("block"):
+			lost_presses += 1
+			Input.action_press("block")
 		await get_tree().physics_frame
 		if not blocks.is_empty():
 			break
 	runner.simulate_action_release("block")
-	assert_array(blocks).is_equal([false])
+	Input.action_release("block")
+	var context: String = "defesas %s, botão solto %d vez(es)" % [str(blocks), lost_presses]
+	assert_array(blocks).override_failure_message(context).is_equal([false])
 	assert_float(player.guard.get_health()).is_between(60.0, 70.0)
 	assert_float(player.health.current_health).is_equal_approx(player.health.max_health, 0.001)
