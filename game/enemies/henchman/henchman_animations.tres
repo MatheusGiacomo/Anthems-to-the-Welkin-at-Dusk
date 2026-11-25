@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="AnimationSet" format=3]
+
+[ext_resource type="Script" path="res://components/visual/animation_set.gd" id="1_set"]
+
+[resource]
+script = ExtResource("1_set")
+idle = &"Idle"
+walk = &"Walking_B"
+walk_backward = &"Walking_Backwards"
+run = &"Running_A"
+strafe_left = &"Running_Strafe_Left"
+strafe_right = &"Running_Strafe_Right"
+attack = &"1H_Melee_Attack_Chop"
+guard = &"2H_Melee_Idle"
+guard_hit = &"Block_Hit"
+stagger = &"Hit_A"
+death = &"Death_A"
+aim = &"2H_Ranged_Aiming"
+shoot = &"2H_Ranged_Shoot"
+idle_speed = 0.2
+run_threshold = 3.0
+walk_reference_speed = 1.8
+run_reference_speed = 5.0
+blend_time = 0.12

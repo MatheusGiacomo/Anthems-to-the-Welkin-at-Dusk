@@ -40,7 +40,7 @@ Cena `henchman.tscn`, cérebro `HenchmanBrain` (só `MeleeTactics`). Valores: `h
 ### Ladrão (`enemies/thief/`)
 Cena `thief.tscn`, cérebro `ThiefBrain`, regras `ThiefRules`. Valores: `thief_ranged.tres` (`RangedBehaviorConfig`, com a flecha `thief_arrow.tres`), `thief_melee.tres` e `thief_dagger.tres` (luta com a adaga), `thief_guard.tres`, `thief_vulnerability.tres`; vida 40.
 1. **Aproximação** (`Chase`): mais longe que X (`attack_distance`, 10 m), corre. Só volta a correr acima de X + `distance_hysteresis`.
-2. **Tiro** (`Shoot`, `RangedAttackState`): olha para o alvo e mira, avançando devagar (`walk_speed`) enquanto o alvo está além de X − `distance_tolerance`; mais perto, fica parado. Depois de `reload_time`, para, puxa o arco por `draw_time` (o arco laranja aparece: o aviso do tiro) e solta a flecha.
+2. **Tiro** (`Shoot`, `RangedAttackState`): olha para o alvo e mira, avançando devagar (`walk_speed`) enquanto o alvo está além de X − `distance_tolerance`; mais perto, fica parado. Depois de `reload_time`, para, puxa a arma por `draw_time` (o modelo mira com a besta: o aviso do tiro) e solta a flecha.
 3. **Fuga** (`Flee`): corre para longe do alvo até ficar a X, e volta ao tiro.
 4. **Luta** (`MeleeChase`, `Caution`, `Lunge` com a adaga): a mesma IA do capanga (`MeleeTactics`) com `thief_melee.tres`, até ficar a X do alvo, e volta ao tiro.
 - **Sorteio** ao sair da vulnerabilidade: com o alvo mais perto que X, luta se `randf()` < `fight_chance` (0,5), senão foge. Longe, segue pela distância (tiro ou aproximação).

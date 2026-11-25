@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" path="res://enemies/enemy.gd" id="1_enemy"]
 [ext_resource type="Script" path="res://ui/debug/enemy_debug_label.gd" id="90_debug_label"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/characters/Rogue.glb" id="91_model"]
+[ext_resource type="Script" path="res://components/visual/character_animator.gd" id="92_animator"]
+[ext_resource type="Resource" path="res://enemies/thief/thief_animations.tres" id="93_animations"]
+[ext_resource type="Script" path="res://components/visual/model_loadout.gd" id="94_loadout"]
 [ext_resource type="Script" path="res://components/locomotion/locomotion_component.gd" id="2_locomotion"]
 [ext_resource type="Script" path="res://components/health/health_component.gd" id="3_health"]
 [ext_resource type="Script" path="res://components/vulnerability/vulnerability_component.gd" id="4_vulnerability"]
@@ -29,26 +33,6 @@
 radius = 0.4
 height = 1.75
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
-radius = 0.4
-height = 1.75
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
-albedo_color = Color(0.25, 0.55, 0.3, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_nose"]
-size = Vector3(0.2, 0.2, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nose"]
-albedo_color = Color(0.1, 0.15, 0.1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_guard"]
-size = Vector3(0.6, 0.08, 0.08)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guard"]
-albedo_color = Color(0.75, 0.75, 0.8, 1)
-metallic = 0.6
-
 [sub_resource type="BoxMesh" id="BoxMesh_slash"]
 size = Vector3(1.2, 0.05, 1.2)
 
@@ -56,13 +40,6 @@ size = Vector3(1.2, 0.05, 1.2)
 transparency = 1
 shading_mode = 0
 albedo_color = Color(1, 0.3, 0.3, 0.45)
-
-[sub_resource type="BoxMesh" id="BoxMesh_bow"]
-size = Vector3(1.0, 0.08, 0.08)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bow"]
-shading_mode = 0
-albedo_color = Color(1, 0.6, 0.15, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
 size = Vector3(1.2, 1.5, 1.2)
@@ -83,33 +60,14 @@ shape = SubResource("CapsuleShape3D_body")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="Body" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, 0)
-mesh = SubResource("CapsuleMesh_body")
-surface_material_override/0 = SubResource("StandardMaterial3D_body")
-
-[node name="Nose" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.45, -0.45)
-mesh = SubResource("BoxMesh_nose")
-surface_material_override/0 = SubResource("StandardMaterial3D_nose")
-
-[node name="GuardMesh" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 1.1, -0.55)
-visible = false
-mesh = SubResource("BoxMesh_guard")
-surface_material_override/0 = SubResource("StandardMaterial3D_guard")
+[node name="Rogue" parent="Visual" instance=ExtResource("91_model")]
+transform = Transform3D(-0.8, 0, 0, 0, 0.8, 0, 0, 0, -0.8, 0, 0, 0)
 
 [node name="SlashMesh" type="MeshInstance3D" parent="Visual"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.8)
 visible = false
 mesh = SubResource("BoxMesh_slash")
 surface_material_override/0 = SubResource("StandardMaterial3D_slash")
-
-[node name="BowDrawn" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -0.55)
-visible = false
-mesh = SubResource("BoxMesh_bow")
-surface_material_override/0 = SubResource("StandardMaterial3D_bow")
 
 [node name="Muzzle" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, -0.7)
@@ -163,10 +121,9 @@ attack = NodePath("../Dagger")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.975, 0)
 shape = SubResource("CapsuleShape3D_hurt")
 
-[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("model_root", "guard_mesh", "slash_mesh", "vulnerability", "guard", "attack", "health")]
+[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("model_root", "slash_mesh", "vulnerability", "guard", "attack", "health")]
 script = ExtResource("12_visual")
-model_root = NodePath("../Visual")
-guard_mesh = NodePath("../Visual/GuardMesh")
+model_root = NodePath("../Visual/Rogue")
 slash_mesh = NodePath("../Visual/SlashMesh")
 vulnerability = NodePath("../Vulnerability")
 guard = NodePath("../Guard")
@@ -195,12 +152,11 @@ script = ExtResource("16_idle")
 [node name="Chase" type="Node" parent="Brain"]
 script = ExtResource("17_chase")
 
-[node name="Shoot" type="Node" parent="Brain" node_paths=PackedStringArray("muzzle", "draw_indicator")]
+[node name="Shoot" type="Node" parent="Brain" node_paths=PackedStringArray("muzzle")]
 script = ExtResource("18_shoot")
 behavior = ExtResource("14_ranged")
 arrow_scene = ExtResource("19_arrow")
 muzzle = NodePath("../../Muzzle")
-draw_indicator = NodePath("../../Visual/BowDrawn")
 
 [node name="Flee" type="Node" parent="Brain"]
 script = ExtResource("20_flee")
@@ -233,3 +189,22 @@ script = ExtResource("90_debug_label")
 brain = NodePath("../Brain")
 health = NodePath("../Health")
 vulnerability = NodePath("../Vulnerability")
+
+[node name="Animator" type="Node" parent="." node_paths=PackedStringArray("animation_player", "body", "health", "vulnerability", "guard", "attack", "hurt_box", "ranged_state")]
+script = ExtResource("92_animator")
+animation_player = NodePath("../Visual/Rogue/AnimationPlayer")
+animations = ExtResource("93_animations")
+body = NodePath("..")
+health = NodePath("../Health")
+vulnerability = NodePath("../Vulnerability")
+guard = NodePath("../Guard")
+attack = NodePath("../Dagger")
+hurt_box = NodePath("../HurtBox")
+ranged_state = NodePath("../Brain/Shoot")
+[node name="Loadout" type="Node" parent="." node_paths=PackedStringArray("model", "state_machine")]
+script = ExtResource("94_loadout")
+model = NodePath("../Visual/Rogue")
+accessories = Array[StringName]([&"2H_Crossbow"])
+state_machine = NodePath("../Brain")
+alternate_states = Array[StringName]([&"MeleeChase", &"Caution", &"Lunge"])
+alternate_accessories = Array[StringName]([&"Knife"])

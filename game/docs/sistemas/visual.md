@@ -12,6 +12,15 @@ componentes.
 - `components/visual/model_loadout.gd` (`ModelLoadout`): esconde os acessórios das mãos que não são usados, prende uma arma extra a um encaixe e troca de conjunto em certos estados da IA.
 - `components/visual/combat_visual.gd` (`CombatVisual`): avisos de leitura de jogo (cor no preparo e na vulnerabilidade, arco do golpe).
 
+## Personagens
+| Entidade | Modelo | Nas mãos (`ModelLoadout`) | Clipes próprios (`*_animations.tres`) |
+|---|---|---|---|
+| Player | `Knight` | `1H_Sword`, `Round_Shield` | golpe `1H_Melee_Attack_Slice_Diagonal`, guarda `Blocking`, andar `Walking_A`, correr `Running_A` |
+| Capanga | `Barbarian` | espada avulsa (`sword_1handed.gltf`) no `handslot_r` | golpe `1H_Melee_Attack_Chop`, guarda `2H_Melee_Idle` (espada atravessada à frente), andar `Walking_B` |
+| Ladrão | `Rogue` | `2H_Crossbow`; `Knife` nos estados `MeleeChase`, `Caution` e `Lunge` | golpe `1H_Melee_Attack_Stab`, guarda `2H_Melee_Idle`, mira `2H_Ranged_Aiming`, tiro `2H_Ranged_Shoot`, correr `Running_B` |
+
+Comuns: `Idle`, `Walking_Backwards`, `Running_Strafe_Left/Right`, `Block_Hit` (defesa), `Hit_A` (atordoado), `Death_A`. Os modelos têm cerca de 2,4 m (proporção chibi); na cena ficam com escala 0,8 e girados 180° (o glTF olha para +Z; o jogo, para -Z). O ladrão usa besta no lugar do arco: o arco só existe no KayKit Adventurers 2.0 (itch.io).
+
 ## Regras
 - **Prioridade do clipe:** morte → atordoado → golpe → puxar o tiro → tiro recém-solto → guarda (defesa, se acabou de defender; senão erguida) → locomoção.
 - **Locomoção** pela velocidade em relação à frente: parado abaixo de `idle_speed`; de costas quando o movimento para trás predomina; de lado (correndo de lado) quando o lateral predomina; para a frente, correr a partir de `run_threshold`, senão andar.

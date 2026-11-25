@@ -2,6 +2,11 @@
 
 [ext_resource type="Script" path="res://enemies/enemy.gd" id="1_enemy"]
 [ext_resource type="Script" path="res://ui/debug/enemy_debug_label.gd" id="90_debug_label"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/characters/Barbarian.glb" id="91_model"]
+[ext_resource type="Script" path="res://components/visual/character_animator.gd" id="92_animator"]
+[ext_resource type="Resource" path="res://enemies/henchman/henchman_animations.tres" id="93_animations"]
+[ext_resource type="Script" path="res://components/visual/model_loadout.gd" id="94_loadout"]
+[ext_resource type="PackedScene" path="res://assets/kaykit/weapons/sword_1handed.gltf" id="95_sword"]
 [ext_resource type="Script" path="res://components/locomotion/locomotion_component.gd" id="2_locomotion"]
 [ext_resource type="Script" path="res://components/health/health_component.gd" id="3_health"]
 [ext_resource type="Script" path="res://components/vulnerability/vulnerability_component.gd" id="4_vulnerability"]
@@ -24,26 +29,6 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.45
 height = 1.9
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_body"]
-radius = 0.45
-height = 1.9
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
-albedo_color = Color(0.7, 0.2, 0.2, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_nose"]
-size = Vector3(0.2, 0.2, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nose"]
-albedo_color = Color(0.15, 0.1, 0.1, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_guard"]
-size = Vector3(1.0, 0.12, 0.12)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guard"]
-albedo_color = Color(0.75, 0.75, 0.8, 1)
-metallic = 0.6
 
 [sub_resource type="BoxMesh" id="BoxMesh_slash"]
 size = Vector3(1.6, 0.05, 1.6)
@@ -72,21 +57,8 @@ shape = SubResource("CapsuleShape3D_body")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="Body" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-mesh = SubResource("CapsuleMesh_body")
-surface_material_override/0 = SubResource("StandardMaterial3D_body")
-
-[node name="Nose" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -0.5)
-mesh = SubResource("BoxMesh_nose")
-surface_material_override/0 = SubResource("StandardMaterial3D_nose")
-
-[node name="GuardMesh" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 1.2, -0.6)
-visible = false
-mesh = SubResource("BoxMesh_guard")
-surface_material_override/0 = SubResource("StandardMaterial3D_guard")
+[node name="Barbarian" parent="Visual" instance=ExtResource("91_model")]
+transform = Transform3D(-0.8, 0, 0, 0, 0.8, 0, 0, 0, -0.8, 0, 0, 0)
 
 [node name="SlashMesh" type="MeshInstance3D" parent="Visual"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
@@ -143,10 +115,9 @@ attack = NodePath("../Sword")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
 shape = SubResource("CapsuleShape3D_hurt")
 
-[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("model_root", "guard_mesh", "slash_mesh", "vulnerability", "guard", "attack", "health")]
+[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("model_root", "slash_mesh", "vulnerability", "guard", "attack", "health")]
 script = ExtResource("12_visual")
-model_root = NodePath("../Visual")
-guard_mesh = NodePath("../Visual/GuardMesh")
+model_root = NodePath("../Visual/Barbarian")
 slash_mesh = NodePath("../Visual/SlashMesh")
 vulnerability = NodePath("../Vulnerability")
 guard = NodePath("../Guard")
@@ -196,3 +167,20 @@ script = ExtResource("90_debug_label")
 brain = NodePath("../Brain")
 health = NodePath("../Health")
 vulnerability = NodePath("../Vulnerability")
+
+[node name="Animator" type="Node" parent="." node_paths=PackedStringArray("animation_player", "body", "health", "vulnerability", "guard", "attack", "hurt_box")]
+script = ExtResource("92_animator")
+animation_player = NodePath("../Visual/Barbarian/AnimationPlayer")
+animations = ExtResource("93_animations")
+body = NodePath("..")
+health = NodePath("../Health")
+vulnerability = NodePath("../Vulnerability")
+guard = NodePath("../Guard")
+attack = NodePath("../Sword")
+hurt_box = NodePath("../HurtBox")
+
+[node name="Loadout" type="Node" parent="." node_paths=PackedStringArray("model")]
+script = ExtResource("94_loadout")
+model = NodePath("../Visual/Barbarian")
+extra_weapon = ExtResource("95_sword")
+extra_weapon_transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0.0333, 0)
