@@ -15,3 +15,5 @@ extends Resource
 @export var attacking_multiplier: float = 0.3
 ## Se true, a direção do olhar fica travada do início ao fim de um ataque.
 @export var lock_facing_while_attacking: bool = true
+## Fração do intervalo do próximo ataque depois de um parry perfeito (0,5 = metade).
+@export var perfect_parry_cooldown_scale: float = 0.5

@@ -30,6 +30,15 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 - **Onde cada efeito é aplicado:** a HurtBox aplica no defensor (dano, pontos, desgaste do escudo, atordoamento no choque); a HitBox aplica no atacante (atordoamento por parry, guarda refletida e choque), a partir do resultado que a HurtBox devolve.
 - Quem já morreu ignora golpes (`IGNORED`).
 
+### Player (`player/player.gd`)
+- **Atacar** (`attack`): golpe para a frente (`sword_slash.tres`: 0,7 ataque/s), só com o escudo abaixado. O olhar trava durante o ataque (`lock_facing_while_attacking`) e a velocidade cai para `attacking_multiplier`.
+- **Bloquear** (`block`, segurar): ergue o escudo (`player_guard.tres`) fora de um ataque; a velocidade cai para `blocking_multiplier` e não dá para atacar. Soltar o botão abaixa.
+- **Ao abaixar o escudo**, por qualquer motivo, o intervalo do ataque recomeça inteiro; depois de um parry perfeito, recomeça em `perfect_parry_cooldown_scale` (metade).
+- Depois de o escudo **quebrar ou ser interrompido**, só ergue de novo com um novo clique (segurar não reergue sozinho), para o parry perfeito não acontecer sem intenção.
+- **Vulnerável** (`player_vulnerability.tres`, 0,6 s): não age; o ataque é cancelado e o escudo abaixado.
+- **Morte**: para de lutar, a HurtBox deixa de receber golpes e o player emite `died`.
+- Visual provisório (`CombatVisual`): escudo visível quando erguido, arco branco na fase de golpe, corpo laranja no preparo e amarelo quando vulnerável.
+
 ## Sinais
 - `HealthComponent.damaged(amount, remaining)`, `died`.
 - `VulnerabilityComponent.vulnerable_started`, `vulnerable_ended`.

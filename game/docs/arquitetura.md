@@ -23,7 +23,7 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 
 ## Cenas principais
 - `arena/arena.tscn` (**Main Scene**) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun` (luz); `Floor` (StaticBody3D 40×40 m, topo em y = 0); `Walls` (4 StaticBody3D nas bordas); `Player`; `IsometricCamera` (alvo: `Player`). O `arena.gd` entrega a câmera ao player.
-- `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (cápsula e "nariz" que mostra a frente), `Locomotion`.
+- `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (cápsula, "nariz" que mostra a frente, escudo e arco do golpe), `Locomotion`, `Health`, `Vulnerability`, `Guard`, `Sword` (MeleeAttackComponent), `HitBox`, `HurtBox`, `CombatVisual`.
 - `camera/isometric_camera.tscn` → `IsometricCamera` (Camera3D ortográfica, `isometric_camera.gd`).
 
 ## Autoloads

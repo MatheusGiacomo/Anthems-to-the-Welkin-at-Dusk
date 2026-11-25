@@ -3,6 +3,16 @@
 [ext_resource type="Script" path="res://player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://player/player_config.tres" id="2_config"]
 [ext_resource type="Script" path="res://components/locomotion/locomotion_component.gd" id="3_locomotion"]
+[ext_resource type="Script" path="res://components/health/health_component.gd" id="4_health"]
+[ext_resource type="Script" path="res://components/vulnerability/vulnerability_component.gd" id="5_vulnerability"]
+[ext_resource type="Resource" path="res://player/player_vulnerability.tres" id="6_vulnerability_config"]
+[ext_resource type="Script" path="res://components/guard/guard_component.gd" id="7_guard"]
+[ext_resource type="Resource" path="res://player/player_guard.tres" id="8_guard_config"]
+[ext_resource type="Script" path="res://components/melee_attack/melee_attack_component.gd" id="9_attack"]
+[ext_resource type="Resource" path="res://player/sword_slash.tres" id="10_sword_slash"]
+[ext_resource type="Script" path="res://components/hit/hit_box.gd" id="11_hit_box"]
+[ext_resource type="Script" path="res://components/hit/hurt_box.gd" id="12_hurt_box"]
+[ext_resource type="Script" path="res://components/visual/combat_visual.gd" id="13_visual"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -20,6 +30,28 @@ size = Vector3(0.2, 0.2, 0.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nose"]
 albedo_color = Color(0.9, 0.9, 0.95, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_guard"]
+size = Vector3(0.9, 1.2, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_guard"]
+albedo_color = Color(0.7, 0.72, 0.78, 1)
+metallic = 0.6
+
+[sub_resource type="BoxMesh" id="BoxMesh_slash"]
+size = Vector3(2.2, 0.05, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slash"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.45)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(2.2, 1.5, 1.6)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hurt"]
+radius = 0.45
+height = 1.8
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
@@ -44,6 +76,70 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -0.45)
 mesh = SubResource("BoxMesh_nose")
 surface_material_override/0 = SubResource("StandardMaterial3D_nose")
 
+[node name="GuardMesh" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.6)
+visible = false
+mesh = SubResource("BoxMesh_guard")
+surface_material_override/0 = SubResource("StandardMaterial3D_guard")
+
+[node name="SlashMesh" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.9)
+visible = false
+mesh = SubResource("BoxMesh_slash")
+surface_material_override/0 = SubResource("StandardMaterial3D_slash")
+
 [node name="Locomotion" type="Node" parent="." node_paths=PackedStringArray("body")]
 script = ExtResource("3_locomotion")
 body = NodePath("..")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("4_health")
+max_health = 100.0
+
+[node name="Vulnerability" type="Node" parent="."]
+script = ExtResource("5_vulnerability")
+config = ExtResource("6_vulnerability_config")
+
+[node name="Guard" type="Node" parent="."]
+script = ExtResource("7_guard")
+config = ExtResource("8_guard_config")
+
+[node name="Sword" type="Node" parent="." node_paths=PackedStringArray("hit_box")]
+script = ExtResource("9_attack")
+data = ExtResource("10_sword_slash")
+hit_box = NodePath("../HitBox")
+
+[node name="HitBox" type="Area3D" parent="." node_paths=PackedStringArray("vulnerability", "source")]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("11_hit_box")
+vulnerability = NodePath("../Vulnerability")
+source = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.9)
+shape = SubResource("BoxShape3D_hit")
+
+[node name="HurtBox" type="Area3D" parent="." node_paths=PackedStringArray("health", "vulnerability", "guard", "attack")]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("12_hurt_box")
+health = NodePath("../Health")
+vulnerability = NodePath("../Vulnerability")
+guard = NodePath("../Guard")
+attack = NodePath("../Sword")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_hurt")
+
+[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("body_mesh", "guard_mesh", "slash_mesh", "vulnerability", "guard", "attack")]
+script = ExtResource("13_visual")
+body_mesh = NodePath("../Visual/Body")
+guard_mesh = NodePath("../Visual/GuardMesh")
+slash_mesh = NodePath("../Visual/SlashMesh")
+vulnerability = NodePath("../Vulnerability")
+guard = NodePath("../Guard")
+attack = NodePath("../Sword")
