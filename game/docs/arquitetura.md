@@ -3,7 +3,7 @@
 Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer mudança nos itens abaixo.
 
 ## Visão geral
-- Jogo 3D low poly com câmera fixa de cima (ortográfica, inclinada), ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD (o player olha para onde anda), atacar e bloquear (com parry) com os botões do mouse.
+- Jogo 3D low poly com câmera fixa de cima (ortográfica, inclinada), ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD (o player olha para onde anda), atacar (J) e bloquear com parry (K).
 - O escopo chega em versões do MVP. **MVP V1 (atual): combate e jogabilidade** em três fases encadeadas com props placeholder (entrar por um lado, vencer os inimigos, sair pelo outro): movimento, ataque, escudo com parry, combo e vulnerabilidade do player; dois inimigos (capanga corpo a corpo e ladrão arqueiro) com spawn e IA; vida para todos, com reinício da fase quando o player morre. A arena plana do início fica como cena de teste.
 - Todo número de balanceamento é fictício e fica em `Resource` (`.tres`) ou `@export`, editável no inspetor.
 
@@ -51,8 +51,8 @@ Formato: `emissor.sinal` → `receptor._handler` — propósito. Sinais internos
 | Ação | Entrada | Uso |
 |---|---|---|
 | `move_forward`, `move_back`, `move_left`, `move_right` | W, S, A, D (teclas físicas) | Movimento relativo à câmera (W = para cima na tela) |
-| `attack` | Botão esquerdo do mouse | Golpe na direção em que o player olha |
-| `block` | Botão direito do mouse (segurar) | Erguer o escudo |
+| `attack` | J (tecla física) | Golpe na direção em que o player olha |
+| `block` | K (tecla física, segurar) | Erguer o escudo |
 | `debug_toggle_overlay` | F3 | Mostra/esconde o painel de balanceamento |
 | `debug_respawn_enemies` | F5 | Remove os inimigos da fase (ou da arena) e spawna de novo |
 

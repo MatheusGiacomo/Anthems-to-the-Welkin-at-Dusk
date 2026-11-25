@@ -1,6 +1,6 @@
 class_name Player
 extends CharacterBody3D
-## Player controlado por WASD (movimento) e pelos botões do mouse (ataque e escudo). Olha para
+## Player controlado pelo teclado: WASD (movimento), J (ataque) e K (escudo). Olha para
 ## onde anda; golpe e escudo valem na direção em que está virado. Lê o input e orquestra os
 ## componentes; as regras ficam neles e em `MovementRules`.
 
@@ -12,8 +12,8 @@ signal died
 ## "para frente" é -Z.
 var camera: FixedCamera
 
-# Depois de o escudo quebrar ou ser interrompido, só ergue de novo com um novo clique: segurar o
-# botão não reergue sozinho quando a espera acaba (evita um parry perfeito sem intenção).
+# Depois de o escudo quebrar ou ser interrompido, só ergue de novo apertando o botão outra vez:
+# segurar não reergue sozinho quando a espera acaba (evita um parry perfeito sem intenção).
 var _needs_block_repress: bool = false
 
 @onready var locomotion: LocomotionComponent = $Locomotion
@@ -63,7 +63,7 @@ func _update_guard() -> void:
 		guard.raise()
 
 
-## Ataca no clique, se o escudo não estiver erguido e o intervalo já tiver passado.
+## Ataca ao apertar o botão, se o escudo não estiver erguido e o intervalo já tiver passado.
 func _update_attack() -> void:
 	if Input.is_action_just_pressed("attack") and not guard.is_raised():
 		sword.try_attack()
@@ -103,8 +103,8 @@ func _on_vulnerability_vulnerable_started() -> void:
 
 
 ## Ao abaixar o escudo, por qualquer motivo, recomeça o intervalo do ataque: inteiro, ou cortado
-## por `perfect_parry_cooldown_scale` se houve parry perfeito. Quebra e interrupção exigem um
-## novo clique para erguer de novo.
+## por `perfect_parry_cooldown_scale` se houve parry perfeito. Quebra e interrupção exigem
+## apertar o botão de novo para erguer outra vez.
 func _on_guard_lowered(reason: int, after_perfect_parry: bool) -> void:
 	var cooldown_scale: float = config.perfect_parry_cooldown_scale if after_perfect_parry else 1.0
 	sword.restart_cooldown(cooldown_scale)
