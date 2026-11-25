@@ -51,3 +51,6 @@ Dados: `AttackData` (efeitos, defesa possível, fases e ritmo) e os `*Config`, t
 `test/unit/`: `vulnerability_model_test`, `health_component_test`, `guard_model_test`,
 `attack_cycle_test`, `hit_resolver_test`, `combat_geometry_test` e `hurt_box_test` (componentes
 reais, sem física).
+`test/unit/balance_invariants_test.gd`: lê os `.tres` e garante as duas restrições do MVP — um
+único inimigo (corpo a corpo ou arqueiro) não consegue combar o player, e o combo do player
+encadeia em todo inimigo. Ajuste de números que quebre uma delas reprova o check.
