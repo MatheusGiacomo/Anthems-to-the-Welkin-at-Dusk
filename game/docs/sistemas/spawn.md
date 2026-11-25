@@ -9,7 +9,7 @@ Colocar inimigos na cena a partir de marcadores e decidir quando eles ficam agre
 - As duas funções essenciais de uma unidade ficam no `Enemy`: `spawn(transform)` (coloca parada no lugar, sem alvo) e `aggro(target)` (define o alvo e liga a IA).
 
 ## Regras
-- `spawn_all()`: para cada `SpawnPoint` com cena, instancia o inimigo (com o nome do ponto), coloca-o parado na posição e na direção (-Z) do ponto e registra o raio de agressão.
+- `spawn_all()`: para cada `SpawnPoint` com cena, instancia o inimigo (nomeado `<ponto>Enemy`), coloca-o parado na posição e na direção (-Z) do ponto e registra o raio de agressão.
 - **Agressão**: na hora, se `aggro_on_spawn`; quando o alvo entra em `aggro_radius` (0 desliga); ou quando o inimigo é atingido (contra quem bateu, regra do `Enemy`).
 - `respawn_all()`: remove inimigos e projéteis e spawna de novo. Na arena, tecla F5 (`debug_respawn_enemies`).
 - `calm_all()`: todos largam o alvo e a agressão por proximidade é desligada (o alvo vira nulo).

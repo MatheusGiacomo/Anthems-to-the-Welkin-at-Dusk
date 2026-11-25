@@ -65,15 +65,15 @@ func get_alive_count() -> int:
 	return _alive.size()
 
 
-## Instancia o inimigo de `point` (com o nome do ponto), coloca-o parado no lugar e na direção do
-## ponto e registra o raio de agressão. Fica agressivo na hora se o ponto pedir.
+## Instancia o inimigo de `point` (nomeado `<ponto>Enemy`), coloca-o parado no lugar e na
+## direção do ponto e registra o raio de agressão. Fica agressivo na hora se o ponto pedir.
 func _spawn(point: SpawnPoint) -> void:
 	var enemy: Enemy = point.enemy_scene.instantiate() as Enemy
 	if enemy == null:
 		push_warning("%s: a cena do SpawnPoint não tem Enemy na raiz." % point.get_path())
 		return
 	# O nome do ponto identifica o inimigo no painel de debug e na árvore remota.
-	enemy.name = point.name
+	enemy.name = "%sEnemy" % point.name
 	add_child(enemy, true)
 	var facing: Basis = Basis(Vector3.UP, point.global_rotation.y)
 	enemy.spawn(Transform3D(facing, point.global_position))
