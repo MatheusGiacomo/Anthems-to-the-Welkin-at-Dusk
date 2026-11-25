@@ -3,7 +3,7 @@
 Visão do projeto como ele está **agora**. Atualize no mesmo passo de qualquer mudança nos itens abaixo.
 
 ## Visão geral
-- Jogo 3D low poly com câmera isométrica, ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD, olhar com o mouse, atacar e bloquear (com parry).
+- Jogo 3D low poly com câmera isométrica, ambientado na Europa medieval da literatura. Combate hack'n slash: andar com WASD (o player olha para onde anda), atacar e bloquear (com parry) com os botões do mouse.
 - O escopo chega em versões do MVP. **MVP V1 (atual): combate e jogabilidade** numa arena plana e fechada, sem props: movimento, ataque, escudo com parry, combo e vulnerabilidade do player; dois inimigos (capanga corpo a corpo e ladrão arqueiro) com spawn e IA; vida para todos, com reinício da arena quando o player morre.
 - Todo número de balanceamento é fictício e fica em `Resource` (`.tres`) ou `@export`, editável no inspetor.
 
@@ -47,7 +47,7 @@ Formato: `emissor.sinal` → `receptor._handler` — propósito. Sinais internos
 | `debug_toggle_overlay` | F3 | Mostra/esconde o painel de balanceamento |
 | `debug_respawn_enemies` | F5 | Remove os inimigos e spawna de novo |
 
-O olhar segue o cursor projetado no chão (não é uma ação).
+O olhar segue a direção do movimento e trava durante o ataque e com o escudo erguido (não é uma ação).
 
 ## Camadas de colisão (3D)
 | Nº | Nome | Quem está nela | Quem detecta |

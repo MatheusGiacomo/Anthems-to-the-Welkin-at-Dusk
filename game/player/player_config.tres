@@ -5,9 +5,8 @@
 [resource]
 script = ExtResource("1_config")
 move_speed = 5.0
-forward_multiplier = 1.0
-backward_multiplier = 0.6
 blocking_multiplier = 0.5
 attacking_multiplier = 0.3
 lock_facing_while_attacking = true
+lock_facing_while_blocking = true
 perfect_parry_cooldown_scale = 0.5

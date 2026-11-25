@@ -1,14 +1,15 @@
 class_name Player
 extends CharacterBody3D
-## Player controlado por WASD e mouse. Lê o input e orquestra os componentes; as regras ficam
-## neles e em `MovementRules`.
+## Player controlado por WASD (movimento) e pelos botões do mouse (ataque e escudo). Olha para
+## onde anda; golpe e escudo valem na direção em que está virado. Lê o input e orquestra os
+## componentes; as regras ficam neles e em `MovementRules`.
 
 signal died
 
 @export var config: PlayerConfig
 
-## Câmera usada no movimento relativo à tela e na mira pelo mouse; atribuída pela arena.
-## Sem câmera, "para frente" é -Z e o olhar não muda.
+## Câmera usada no movimento relativo à tela; atribuída pela cena que tem o player. Sem câmera,
+## "para frente" é -Z.
 var camera: IsometricCamera
 
 # Depois de o escudo quebrar ou ser interrompido, só ergue de novo com um novo clique: segurar o
@@ -40,8 +41,9 @@ func _physics_process(delta: float) -> void:
 		return
 	_update_guard()
 	_update_attack()
-	_update_facing(delta)
-	_update_movement(delta)
+	var direction: Vector3 = _input_direction()
+	_update_facing(direction, delta)
+	_update_movement(direction, delta)
 
 
 ## Devolve se o player pode agir: vivo e fora da vulnerabilidade.
@@ -67,25 +69,26 @@ func _update_attack() -> void:
 		sword.try_attack()
 
 
-## Gira o player para o ponto do chão sob o cursor, exceto durante um ataque com o olhar travado.
-func _update_facing(delta: float) -> void:
-	if camera == null:
-		return
-	if sword.is_attacking() and config.lock_facing_while_attacking:
-		return
-	var aim_point: Vector3 = camera.mouse_ground_point(global_position.y, global_position)
-	locomotion.face_direction(aim_point - global_position, delta)
-
-
-## Move na direção do input, relativa à câmera. A velocidade vem do alinhamento entre o
-## movimento e o olhar, reduzida com o escudo erguido e durante um ataque.
-func _update_movement(delta: float) -> void:
+## Devolve a direção do input de movimento no chão, relativa à câmera, com comprimento até 1.
+func _input_direction() -> Vector3:
 	var input: Vector2 = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var camera_yaw: float = camera.get_yaw() if camera != null else 0.0
-	var direction: Vector3 = MovementRules.camera_relative_direction(input, camera_yaw)
-	var multiplier: float = MovementRules.alignment_multiplier(
-		direction, locomotion.get_forward(), config.forward_multiplier, config.backward_multiplier
-	)
+	return MovementRules.camera_relative_direction(input, camera_yaw)
+
+
+## Gira o player para `direction` (para onde anda). Não gira parado, nem com o olhar travado
+## durante um ataque ou com o escudo erguido (ver `PlayerConfig`).
+func _update_facing(direction: Vector3, delta: float) -> void:
+	if sword.is_attacking() and config.lock_facing_while_attacking:
+		return
+	if guard.is_raised() and config.lock_facing_while_blocking:
+		return
+	locomotion.face_direction(direction, delta)
+
+
+## Move em `direction` a `move_speed`, reduzida com o escudo erguido e durante um ataque.
+func _update_movement(direction: Vector3, delta: float) -> void:
+	var multiplier: float = 1.0
 	if guard.is_raised():
 		multiplier *= config.blocking_multiplier
 	if sword.is_attacking():
