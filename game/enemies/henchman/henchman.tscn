@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://enemies/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" path="res://ui/debug/enemy_debug_label.gd" id="90_debug_label"]
 [ext_resource type="Script" path="res://components/locomotion/locomotion_component.gd" id="2_locomotion"]
 [ext_resource type="Script" path="res://components/health/health_component.gd" id="3_health"]
 [ext_resource type="Script" path="res://components/vulnerability/vulnerability_component.gd" id="4_vulnerability"]
@@ -183,3 +184,15 @@ attack = NodePath("../../Sword")
 
 [node name="Staggered" type="Node" parent="Brain"]
 script = ExtResource("19_staggered")
+
+[node name="DebugLabel" type="Label3D" parent="." node_paths=PackedStringArray("brain", "health", "vulnerability")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
+pixel_size = 0.01
+billboard = 1
+no_depth_test = true
+font_size = 28
+outline_size = 8
+script = ExtResource("90_debug_label")
+brain = NodePath("../Brain")
+health = NodePath("../Health")
+vulnerability = NodePath("../Vulnerability")
