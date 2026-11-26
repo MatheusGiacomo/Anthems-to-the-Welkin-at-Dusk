@@ -9,10 +9,14 @@
 - Onde ajustar cada número: tabela em `docs/sistemas/combate.md` ("Onde ajustar os números"). Todo número fictício está em `.tres` ou `@export`.
 - Visual provisório com personagens animados do KayKit Adventurers 1.0 (CC0).
 - **Animação em camadas** (decisão 0018): o `CharacterAnimator` monta em código uma `AnimationTree` com o corpo inteiro embaixo e a guarda só do tronco para cima. Inimigos na cautela e o player com o escudo andam com as pernas em vez de deslizar. Detalhes em `docs/sistemas/visual.md`.
-- Check completo: 123 testes.
+- **Auditoria por fluxo** (decisão 0019): o `/revisar` dispara um subagente `revisor-fluxo` por fluxo tocado (comentário que não bate, nota desatualizada, duplicação, código morto); `tudo` audita o jogo inteiro. Primeira rodada feita: `##` corrigidos, funções sem uso removidas e a regra de histerese de distância dos inimigos unificada em `DistanceHysteresis`.
+- Texturas do KayKit reimportadas pelo Godot com compressão de vídeo e mipmaps (conversão automática ao detectar uso em 3D).
+- MCP `godot` conferido: roda o projeto certo mesmo com outros editores abertos (recebe o caminho a cada chamada).
+- Check completo: 125 testes.
 
 ## Próximo passo
 - O desenvolvedor valida as camadas jogando: passos na cautela (avançar, recuar, circular) e com o escudo; circular usa `Running_Strafe` a ~0,3× e pode parecer câmera lenta (criar `strafe_reference_speed` se precisar); postura do tronco sobre o quadril (trocar `upper_body_root` para `chest` no `.tres` se inclinar estranho); defesa em movimento só no tronco.
+- Olhar as texturas dos personagens e das armas em busca de manchas da compressão de vídeo (se houver, marcar como Lossless na importação).
 - O desenvolvedor joga as três cenas e valida: girar para onde anda ao mirar o golpe, olhar travado com o escudo, força do knockback, ritmo mais rápido, leitura dos personagens com a câmera afastada.
 - Trocar os props placeholder aos poucos, testando a jogabilidade.
 - Plano separado para navegação dos inimigos (navmesh): hoje vão em linha reta e podem enroscar nos props.
