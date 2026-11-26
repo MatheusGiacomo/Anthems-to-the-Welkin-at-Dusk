@@ -11,6 +11,7 @@ IA de combate dos inimigos, montada com estados reutilizáveis e um cérebro por
 - `components/state_machine/` (`StateMachine`, `State`): máquina genérica.
 - `enemies/melee_behavior_config.gd` (`MeleeBehaviorConfig`): valores de um perfil corpo a corpo (distâncias X e Y, velocidades, tempos da cautela, avanço da investida).
 - `enemies/melee_behavior_rules.gd` (`MeleeBehaviorRules`): regras puras do combate corpo a corpo.
+- `enemies/distance_hysteresis.gd` (`DistanceHysteresis`): "perto ou longe" com folga, base da troca de modo pela distância do corpo a corpo e do ladrão.
 - `enemies/melee_tactics.gd` (`MeleeTactics`): aplica essas regras a um trio de estados (aproximação, cautela, investida) e devolve o próximo; usado pelo capanga e pelo ladrão com a adaga.
 - Estados em `enemies/states/` (`EnemyState`):
 

@@ -9,10 +9,10 @@ enum Mode { CHASE, SHOOT, FLEE, FIGHT }
 ## Devolve o modo pela distância, partindo de `current` (`CHASE` ou `SHOOT`): a aproximação vira
 ## tiro a X; o tiro só volta à aproximação acima de X mais a folga.
 static func distance_mode(current: Mode, distance: float, config: RangedBehaviorConfig) -> Mode:
-	if current == Mode.CHASE:
-		return Mode.SHOOT if distance <= config.attack_distance else Mode.CHASE
-	var give_up_distance: float = config.attack_distance + config.distance_hysteresis
-	return Mode.CHASE if distance > give_up_distance else Mode.SHOOT
+	var near: bool = DistanceHysteresis.is_near(
+		current != Mode.CHASE, distance, config.attack_distance, config.distance_hysteresis
+	)
+	return Mode.SHOOT if near else Mode.CHASE
 
 
 ## Devolve o modo ao sair da vulnerabilidade. Com o alvo ainda perto (mais perto que X), sorteia:

@@ -12,10 +12,10 @@ enum LungeResult { NONE, HIT_TARGET, BLOCKED, CLASHED }
 ## Devolve o modo pela distância, partindo de `current` (`CHASE` ou `CAUTION`): a aproximação vira
 ## cautela a `approach_distance`; a cautela só volta à aproximação acima dela mais a folga.
 static func distance_mode(current: Mode, distance: float, config: MeleeBehaviorConfig) -> Mode:
-	if current == Mode.CHASE:
-		return Mode.CAUTION if distance <= config.approach_distance else Mode.CHASE
-	var give_up_distance: float = config.approach_distance + config.distance_hysteresis
-	return Mode.CHASE if distance > give_up_distance else Mode.CAUTION
+	var near: bool = DistanceHysteresis.is_near(
+		current != Mode.CHASE, distance, config.approach_distance, config.distance_hysteresis
+	)
+	return Mode.CAUTION if near else Mode.CHASE
 
 
 ## Devolve o modo depois de uma investida completa: acertou o alvo, investe de novo; foi defendida
