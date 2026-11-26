@@ -27,11 +27,6 @@ func _ready() -> void:
 	_tactics = MeleeTactics.new(melee_chase_state, caution_state, lunge_state, melee)
 
 
-## Devolve o modo atual (`ThiefRules.Mode`).
-func get_mode() -> ThiefRules.Mode:
-	return _mode
-
-
 ## Começa correndo até o alvo, ou atirando se ele já estiver a até X.
 func _start_combat() -> void:
 	var distance: float = context.distance_to_target()

@@ -24,11 +24,6 @@ func _init(
 	chase.speed = behavior.run_speed
 
 
-## Devolve se `state` é um dos estados destas táticas.
-func owns(state: State) -> bool:
-	return state == chase or state == caution or state == lunge
-
-
 ## Devolve o estado ao entrar em combate corpo a corpo com o alvo a `distance`.
 func state_for_start(distance: float) -> EnemyState:
 	var mode: MeleeBehaviorRules.Mode = MeleeBehaviorRules.distance_mode(

@@ -58,11 +58,6 @@ func is_raised() -> bool:
 	return _model.is_raised
 
 
-## Devolve se pode erguer agora (abaixado e fora do tempo de espera).
-func can_raise() -> bool:
-	return _model.can_raise()
-
-
 ## Devolve se um golpe defendido agora contaria como parry perfeito.
 func is_in_perfect_window() -> bool:
 	return _model.is_in_perfect_window()
