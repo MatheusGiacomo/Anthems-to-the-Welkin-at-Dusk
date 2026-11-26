@@ -16,8 +16,8 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [debug]
 
-gdscript/warnings/inferred_declaration=2
 gdscript/warnings/untyped_declaration=2
+gdscript/warnings/inferred_declaration=2
 
 [display]
 
