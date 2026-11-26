@@ -6,7 +6,7 @@ extends Resource
 @export_group("Distâncias")
 ## X: distância de tiro. Mais longe, corre até o alvo; mais perto que isso, conta como "perto".
 @export var attack_distance: float = 10.0
-## Entre X − este valor e X, avança devagar enquanto mira; mais perto, fica parado.
+## Mirando, avança devagar enquanto o alvo está além de X − este valor; mais perto, fica parado.
 @export var distance_tolerance: float = 1.5
 ## Folga para voltar a correr: só acima de X + este valor.
 @export var distance_hysteresis: float = 0.5

@@ -28,7 +28,7 @@ Comuns: `Idle`, `Walking_Backwards`, `Running_Strafe_Left/Right`, `Block_Hit` (d
 - **Camada de cima:** ligada com a guarda erguida quando nada de prioridade maior (morte, atordoado, golpe, puxada, tiro) está ativo. Assim, andar, recuar ou circular com a guarda move as pernas (capanga e ladrão na cautela, player com o escudo).
 - **Locomoção** pela velocidade em relação à frente: parado abaixo de `idle_speed`; de costas quando o movimento para trás predomina; de lado (correndo de lado) quando o lateral predomina; para a frente, correr a partir de `run_threshold`, senão andar.
 - **Velocidade de reprodução:** o golpe é esticado ou comprimido para durar o mesmo que o ataque (`AttackData.get_duration()`), e a puxada, o mesmo que `draw_time`; a locomoção acompanha a velocidade real (`walk_reference_speed`, `run_reference_speed`).
-- Um ataque novo recomeça o clipe de golpe; um golpe recebido recomeça o de atordoado (o combo se vê); um golpe defendido mostra o clipe de defesa enquanto a guarda segue erguida.
+- Um ataque novo recomeça o clipe de golpe; um golpe recebido recomeça o de atordoado (o combo se vê); um golpe defendido mostra o clipe de defesa pela duração dele e depois volta à guarda erguida.
 - Os clipes de locomoção e de guarda são marcados como repetidos ao iniciar (o glTF não traz essa marcação).
 - A velocidade de reprodução vale só para a camada de baixo; a guarda de cima toca na velocidade normal.
 - O preparo da investida ainda é de corpo inteiro: o inimigo avança com o clipe de golpe, sem passos.

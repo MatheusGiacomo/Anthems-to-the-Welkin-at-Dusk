@@ -38,8 +38,8 @@ func _physics_process(delta: float) -> void:
 		attack_finished.emit(true)
 
 
-## Começa um ataque se nenhum estiver em curso e o intervalo já passou; emite `attack_started`.
-## Devolve se começou.
+## Começa um ataque se nenhum estiver em curso e o intervalo já passou; emite `attack_started` e
+## `phase_changed`. Devolve se começou.
 func try_attack() -> bool:
 	if not _cycle.start():
 		return false
@@ -49,8 +49,8 @@ func try_attack() -> bool:
 	return true
 
 
-## Interrompe o ataque em curso (o intervalo continua contando) e emite `attack_finished(false)`.
-## Sem efeito se não houver ataque.
+## Interrompe o ataque em curso (o intervalo continua contando) e emite `phase_changed` e
+## `attack_finished(false)`. Sem efeito se não houver ataque.
 func cancel() -> void:
 	if not is_attacking():
 		return

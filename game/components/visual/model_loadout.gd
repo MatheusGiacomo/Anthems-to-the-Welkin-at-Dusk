@@ -44,7 +44,8 @@ func _ready() -> void:
 		state_machine.state_changed.connect(_on_state_machine_state_changed)
 
 
-## Deixa visíveis, nos encaixes, só os acessórios de `names`.
+## Deixa visíveis, nos encaixes, só os acessórios de `names`; a arma extra não é tocada e segue
+## sempre visível.
 func _show_only(names: Array[StringName]) -> void:
 	for slot: Node3D in _slots:
 		for child: Node in slot.get_children():

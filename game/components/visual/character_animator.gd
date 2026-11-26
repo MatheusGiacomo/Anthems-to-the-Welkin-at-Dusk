@@ -227,13 +227,15 @@ func _on_attack_attack_started() -> void:
 	_restart_requested = true
 
 
-## Um golpe que acerta durante a vulnerabilidade recomeça o clipe de atordoado.
+## Um golpe que acerta (`HIT`) recomeça os clipes das duas camadas; durante a vulnerabilidade, é o
+## de atordoado que recomeça (o combo se vê).
 func _on_hurt_box_hit_received(_hit: HitInfo, outcome: int) -> void:
 	if outcome == HitResolver.Outcome.HIT:
 		_restart_requested = true
 
 
-## Um golpe defendido mostra o clipe de defesa enquanto a guarda continuar erguida.
+## Um golpe defendido mostra o clipe de defesa pela duração dele, depois volta à guarda erguida, e
+## recomeça os clipes das duas camadas.
 func _on_guard_blocked(_perfect: bool, _broke: bool) -> void:
 	_guard_hit_left = _clip_length(animations.guard_hit)
 	_restart_requested = true
