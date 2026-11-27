@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://enemies/henchman/henchman.tscn" id="6_henchman"]
 [ext_resource type="PackedScene" path="res://enemies/thief/thief.tscn" id="7_thief"]
 [ext_resource type="PackedScene" path="res://ui/debug/debug_overlay.tscn" id="8_debug_overlay"]
+[ext_resource type="PackedScene" path="res://filters/screen_filter.tscn" id="9_screen_filter"]
 
 [sub_resource type="Environment" id="Environment_arena"]
 background_mode = 1
@@ -143,5 +144,7 @@ transform = Transform3D(-0.209529, 0, 0.977802, 0, 1, 0, -0.977802, 0, -0.209529
 script = ExtResource("5_spawn_point")
 enemy_scene = ExtResource("7_thief")
 aggro_radius = 15.0
+
+[node name="ScreenFilter" parent="." instance=ExtResource("9_screen_filter")]
 
 [node name="DebugOverlay" parent="." instance=ExtResource("8_debug_overlay")]
