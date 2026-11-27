@@ -102,11 +102,15 @@ func _on_vulnerability_vulnerable_started() -> void:
 	guard.lower(GuardModel.LowerReason.INTERRUPTED)
 
 
-## Ao abaixar o escudo, por qualquer motivo, recomeça o intervalo do ataque: inteiro, ou cortado
-## por `perfect_parry_cooldown_scale` se houve parry perfeito. Quebra e interrupção exigem
-## apertar o botão de novo para erguer outra vez.
+## Ao abaixar o escudo, por qualquer motivo, recomeça o intervalo do ataque, multiplicado por
+## `guard_lowered_cooldown_scale` (ou por `perfect_parry_cooldown_scale` se houve parry perfeito).
+## Quebra e interrupção exigem apertar o botão de novo para erguer outra vez.
 func _on_guard_lowered(reason: int, after_perfect_parry: bool) -> void:
-	var cooldown_scale: float = config.perfect_parry_cooldown_scale if after_perfect_parry else 1.0
+	var cooldown_scale: float = (
+		config.perfect_parry_cooldown_scale
+		if after_perfect_parry
+		else config.guard_lowered_cooldown_scale
+	)
 	sword.restart_cooldown(cooldown_scale)
 	if reason != GuardModel.LowerReason.RELEASED:
 		_needs_block_repress = true

@@ -9,4 +9,5 @@ blocking_multiplier = 0.5
 attacking_multiplier = 0.3
 lock_facing_while_attacking = true
 lock_facing_while_blocking = true
+guard_lowered_cooldown_scale = 0.5
 perfect_parry_cooldown_scale = 0.5
