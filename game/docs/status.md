@@ -12,9 +12,11 @@
 - **Auditoria por fluxo** (decisão 0019): o `/revisar` dispara um subagente `revisor-fluxo` por fluxo tocado (comentário que não bate, nota desatualizada, duplicação, código morto); `tudo` audita o jogo inteiro. Primeira rodada feita: `##` corrigidos, funções sem uso removidas e a regra de histerese de distância dos inimigos unificada em `DistanceHysteresis`.
 - Texturas do KayKit reimportadas pelo Godot com compressão de vídeo e mipmaps (conversão automática ao detectar uso em 3D).
 - MCP `godot` conferido: roda o projeto certo mesmo com outros editores abertos (recebe o caminho a cada chamada).
-- Check completo: 125 testes.
+- **Filtro de tela** (contribuição #1, `docs/sistemas/filtro-de-tela.md`): dithering pixelado de 3 px em cinzas quentes, com realce vermelho/laranja, e filme de rolo antigo por cima, na sequência de fases e na arena; a UI fica sem filtro.
+- Check completo: 128 testes.
 
 ## Próximo passo
+- Validar o filtro de tela jogando: leitura dos personagens com o pixel de 3 px; o laranja do preparo da investida segue colorido e o amarelo da vulnerabilidade (vira cinza claro) ainda se lê; FPS com os dois passes (Compatibility); riscos e tremulação não cansam (`streak_strength`, `flicker_strength`); vinheta e desfoque de borda não atrapalham (`vignette_strength`, `edge_blur_radius`).
 - O desenvolvedor valida as camadas jogando: passos na cautela (avançar, recuar, circular) e com o escudo; circular usa `Running_Strafe` a ~0,3× e pode parecer câmera lenta (criar `strafe_reference_speed` se precisar); postura do tronco sobre o quadril (trocar `upper_body_root` para `chest` no `.tres` se inclinar estranho); defesa em movimento só no tronco.
 - Olhar as texturas dos personagens e das armas em busca de manchas da compressão de vídeo (se houver, marcar como Lossless na importação).
 - O desenvolvedor joga as três cenas e valida: girar para onde anda ao mirar o golpe, olhar travado com o escudo, força do knockback, ritmo mais rápido, leitura dos personagens com a câmera afastada.
