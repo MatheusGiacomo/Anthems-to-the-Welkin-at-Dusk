@@ -4,7 +4,7 @@
 - **MVP V1 (combate e jogabilidade) implementado** e ajustado para um jogo mais rápido. Escopo no Notion (página MVP, seção v1).
 - **Fluxo em fases** (Main Scene `levels/level_sequence.tscn`, decisão 0017): três cenas encadeadas com props placeholder (árvores e pedras de primitivas). O player entra pelo oeste, vence os inimigos e sai pelo leste; a saída só abre sem inimigos vivos; a troca escurece e clareia a tela; morrer recomeça a fase atual. Detalhes em `docs/sistemas/fases.md`. A arena plana ficou como cena de teste (`arena/arena.tscn`).
 - **Controles:** WASD move e o player olha para onde anda; J ataca na direção em que ele está virado; K segura o escudo (o olhar trava, para recuar defendendo). Velocidade igual em qualquer direção.
-- **Ritmo:** ataque do player a cada 0,8 s; investida do capanga depois de 0,8 s de cautela (ladrão com adaga, 0,6 s). Golpes corpo a corpo têm knockback leve (metade no escudo; nada no parry, no choque e nas flechas).
+- **Ritmo:** ataque do player a cada 0,6 s (2 ataques/s pedem 0,5 s, mas o golpe dura 0,6 s); investida do capanga depois de 0,8 s de cautela (ladrão com adaga, 0,6 s). Golpes corpo a corpo têm knockback leve (metade no escudo; nada no parry, no choque e nas flechas).
 - **Câmera fixa** de frente, inclinada a 45°, enquadrando a cena inteira e refazendo o zoom quando a janela muda. Janela base 1920×1080, aberta maximizada e redimensionável.
 - Onde ajustar cada número: tabela em `docs/sistemas/combate.md` ("Onde ajustar os números"). Todo número fictício está em `.tres` ou `@export`.
 - Visual provisório com personagens animados do KayKit Adventurers 1.0 (CC0).
@@ -13,7 +13,7 @@
 - Texturas do KayKit reimportadas pelo Godot com compressão de vídeo e mipmaps (conversão automática ao detectar uso em 3D).
 - MCP `godot` conferido: roda o projeto certo mesmo com outros editores abertos (recebe o caminho a cada chamada).
 - **Filtro de tela** (contribuição #1, `docs/sistemas/filtro-de-tela.md`): dithering pixelado de 3 px em cinzas quentes, com realce vermelho/laranja, e filme de rolo antigo por cima, na sequência de fases e na arena; a UI fica sem filtro.
-- **Escudo e intervalo do ataque:** ao abaixar o escudo o intervalo recomeça em `guard_lowered_cooldown_scale` (0,5, em `player_config.tres`); o parry perfeito segue em `perfect_parry_cooldown_scale`.
+- **Escudo e intervalo do ataque:** ao abaixar o escudo o intervalo recomeça em `guard_lowered_cooldown_scale` (0,5, em `player_config.tres`); o parry perfeito usa `perfect_parry_cooldown_scale` (0,2); reerguer o escudo espera `release_lockout` de 0,2 s.
 - Check completo: 128 testes.
 
 ## Próximo passo

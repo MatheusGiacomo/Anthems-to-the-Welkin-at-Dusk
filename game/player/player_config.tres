@@ -1,13 +1,7 @@
-[gd_resource type="Resource" script_class="PlayerConfig" format=3]
+[gd_resource type="Resource" script_class="PlayerConfig" format=3 uid="uid://c7onqlqhbmd2j"]
 
-[ext_resource type="Script" path="res://player/player_config.gd" id="1_config"]
+[ext_resource type="Script" uid="uid://d2sv5cdo72438" path="res://player/player_config.gd" id="1_config"]
 
 [resource]
 script = ExtResource("1_config")
-move_speed = 5.0
-blocking_multiplier = 0.5
-attacking_multiplier = 0.3
-lock_facing_while_attacking = true
-lock_facing_while_blocking = true
-guard_lowered_cooldown_scale = 0.5
-perfect_parry_cooldown_scale = 0.5
+perfect_parry_cooldown_scale = 0.2
