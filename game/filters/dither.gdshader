@@ -8,7 +8,7 @@ uniform sampler2D screen_texture : hint_screen_texture, filter_nearest;
 
 group_uniforms pixel;
 // Lado do pixel virtual, em pixels de tela na altura de referência.
-uniform float pixel_size : hint_range(1.0, 16.0, 1.0) = 4.0;
+uniform float pixel_size : hint_range(1.0, 16.0, 1.0) = 3.0;
 // O pixel virtual cresce junto com a janela a partir desta altura (a base do projeto).
 uniform float reference_height : hint_range(240.0, 4320.0, 1.0) = 1080.0;
 

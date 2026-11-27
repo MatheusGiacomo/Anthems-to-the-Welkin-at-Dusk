@@ -51,12 +51,12 @@ uniform float dust_max_radius : hint_range(0.5, 20.0, 0.1) = 4.0;
 group_uniforms grain;
 uniform float grain_strength : hint_range(0.0, 1.0, 0.01) = 0.12;
 // Igual ao pixel do dithering, para o grão casar com a grade de pontos.
-uniform float grain_size : hint_range(1.0, 16.0, 1.0) = 4.0;
+uniform float grain_size : hint_range(1.0, 16.0, 1.0) = 3.0;
 
 group_uniforms lens;
 // Distância ao centro (0 = centro, 1 = meio da borda) onde o desfoque começa.
-uniform float edge_blur_start : hint_range(0.0, 1.5, 0.01) = 0.45;
-uniform float edge_blur_radius : hint_range(0.0, 40.0, 0.1) = 9.0;
+uniform float edge_blur_start : hint_range(0.0, 1.5, 0.01) = 0.85;
+uniform float edge_blur_radius : hint_range(0.0, 40.0, 0.1) = 4.0;
 uniform float vignette_start : hint_range(0.0, 1.5, 0.01) = 0.55;
 uniform float vignette_strength : hint_range(0.0, 1.0, 0.01) = 0.55;
 uniform vec4 vignette_color : source_color = vec4(0.12, 0.09, 0.11, 1.0);

@@ -23,7 +23,7 @@ nos `uniform` dos shaders. Tamanhos em pixels são medidos na altura de referên
 crescem com a janela.
 
 **Dither** (nesta ordem):
-1. Pixeliza em células de `pixel_size` (4 px) e lê a cor do centro de cada célula.
+1. Pixeliza em células de `pixel_size` (3 px) e lê a cor do centro de cada célula.
 2. Luminância com `brightness`, `contrast` e `gamma`.
 3. Quantiza em `tone_levels` (4) tons com limiar de Bayer 8x8 (`dither_strength` 0 = faixas
    chapadas, 1 = pontos completos).
