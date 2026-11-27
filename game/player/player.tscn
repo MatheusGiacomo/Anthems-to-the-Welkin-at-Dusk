@@ -1,23 +1,23 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://2lmydog38c0q"]
 
-[ext_resource type="Script" path="res://player/player.gd" id="1_player"]
+[ext_resource type="Script" uid="uid://crnxanbcnkt2r" path="res://player/player.gd" id="1_player"]
 [ext_resource type="Resource" path="res://player/player_config.tres" id="2_config"]
-[ext_resource type="Script" path="res://components/locomotion/locomotion_component.gd" id="3_locomotion"]
-[ext_resource type="Script" path="res://components/health/health_component.gd" id="4_health"]
-[ext_resource type="Script" path="res://components/vulnerability/vulnerability_component.gd" id="5_vulnerability"]
-[ext_resource type="Resource" path="res://player/player_vulnerability.tres" id="6_vulnerability_config"]
-[ext_resource type="Script" path="res://components/guard/guard_component.gd" id="7_guard"]
-[ext_resource type="Resource" path="res://player/player_guard.tres" id="8_guard_config"]
-[ext_resource type="Script" path="res://components/melee_attack/melee_attack_component.gd" id="9_attack"]
-[ext_resource type="Resource" path="res://player/sword_slash.tres" id="10_sword_slash"]
-[ext_resource type="Script" path="res://components/hit/hit_box.gd" id="11_hit_box"]
-[ext_resource type="Script" path="res://components/hit/hurt_box.gd" id="12_hurt_box"]
-[ext_resource type="Script" path="res://components/visual/combat_visual.gd" id="13_visual"]
-[ext_resource type="PackedScene" path="res://assets/kaykit/characters/Knight.glb" id="14_model"]
-[ext_resource type="Script" path="res://components/visual/character_animator.gd" id="15_animator"]
+[ext_resource type="Script" uid="uid://blvfs31rjbswb" path="res://components/locomotion/locomotion_component.gd" id="3_locomotion"]
+[ext_resource type="Script" uid="uid://bhy1qx4bkcq8p" path="res://components/health/health_component.gd" id="4_health"]
+[ext_resource type="Script" uid="uid://lue8a8kr20f4" path="res://components/vulnerability/vulnerability_component.gd" id="5_vulnerability"]
+[ext_resource type="Resource" uid="uid://c0s24qd3m7gg" path="res://player/player_vulnerability.tres" id="6_vulnerability_config"]
+[ext_resource type="Script" uid="uid://cpil34yf4dyuf" path="res://components/guard/guard_component.gd" id="7_guard"]
+[ext_resource type="Resource" uid="uid://274jgph2voyi" path="res://player/player_guard.tres" id="8_guard_config"]
+[ext_resource type="Script" uid="uid://chbyn0vjvjssq" path="res://components/melee_attack/melee_attack_component.gd" id="9_attack"]
+[ext_resource type="Resource" uid="uid://bcghldagyrd5a" path="res://player/sword_slash.tres" id="10_sword_slash"]
+[ext_resource type="Script" uid="uid://dyt6d577h4x5r" path="res://components/hit/hit_box.gd" id="11_hit_box"]
+[ext_resource type="Script" uid="uid://0e7vlbdrkmk4" path="res://components/hit/hurt_box.gd" id="12_hurt_box"]
+[ext_resource type="Script" uid="uid://b26n1toed37f5" path="res://components/visual/combat_visual.gd" id="13_visual"]
+[ext_resource type="PackedScene" uid="uid://bd14gr28gy8ne" path="res://assets/kaykit/characters/Knight.glb" id="14_model"]
+[ext_resource type="Script" uid="uid://7vbwfxnfbr0v" path="res://components/visual/character_animator.gd" id="15_animator"]
 [ext_resource type="Resource" path="res://player/player_animations.tres" id="16_animations"]
-[ext_resource type="Script" path="res://components/visual/model_loadout.gd" id="17_loadout"]
-[ext_resource type="Script" path="res://components/knockback/knockback_component.gd" id="95_knockback"]
+[ext_resource type="Script" uid="uid://dku6s7tyi1xgr" path="res://components/visual/model_loadout.gd" id="17_loadout"]
+[ext_resource type="Script" uid="uid://22hgt0aog2j6" path="res://components/knockback/knockback_component.gd" id="95_knockback"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.4
@@ -38,50 +38,49 @@ size = Vector3(2.2, 1.5, 1.6)
 radius = 0.45
 height = 1.8
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" unique_id=577097455]
 collision_layer = 2
 collision_mask = 5
 motion_mode = 1
 script = ExtResource("1_player")
 config = ExtResource("2_config")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2088598016]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_body")
 
-[node name="Visual" type="Node3D" parent="."]
+[node name="Visual" type="Node3D" parent="." unique_id=1326765035]
 
-[node name="Knight" parent="Visual" instance=ExtResource("14_model")]
+[node name="Knight" parent="Visual" unique_id=125612173 instance=ExtResource("14_model")]
 transform = Transform3D(-0.8, 0, 0, 0, 0.8, 0, 0, 0, -0.8, 0, 0, 0)
 
-[node name="SlashMesh" type="MeshInstance3D" parent="Visual"]
+[node name="SlashMesh" type="MeshInstance3D" parent="Visual" unique_id=1177024002]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.9)
 visible = false
 mesh = SubResource("BoxMesh_slash")
 surface_material_override/0 = SubResource("StandardMaterial3D_slash")
 
-[node name="Locomotion" type="Node" parent="." node_paths=PackedStringArray("body")]
+[node name="Locomotion" type="Node" parent="." unique_id=1549821223 node_paths=PackedStringArray("body")]
 script = ExtResource("3_locomotion")
 body = NodePath("..")
 
-[node name="Health" type="Node" parent="."]
+[node name="Health" type="Node" parent="." unique_id=2068398317]
 script = ExtResource("4_health")
-max_health = 100.0
 
-[node name="Vulnerability" type="Node" parent="."]
+[node name="Vulnerability" type="Node" parent="." unique_id=704818268]
 script = ExtResource("5_vulnerability")
 config = ExtResource("6_vulnerability_config")
 
-[node name="Guard" type="Node" parent="."]
+[node name="Guard" type="Node" parent="." unique_id=2092367401]
 script = ExtResource("7_guard")
 config = ExtResource("8_guard_config")
 
-[node name="Sword" type="Node" parent="." node_paths=PackedStringArray("hit_box")]
+[node name="Sword" type="Node" parent="." unique_id=809365917 node_paths=PackedStringArray("hit_box")]
 script = ExtResource("9_attack")
 data = ExtResource("10_sword_slash")
 hit_box = NodePath("../HitBox")
 
-[node name="HitBox" type="Area3D" parent="." node_paths=PackedStringArray("vulnerability", "source")]
+[node name="HitBox" type="Area3D" parent="." unique_id=1585787996 node_paths=PackedStringArray("vulnerability", "source")]
 collision_layer = 0
 collision_mask = 16
 monitorable = false
@@ -89,11 +88,11 @@ script = ExtResource("11_hit_box")
 vulnerability = NodePath("../Vulnerability")
 source = NodePath("..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" unique_id=54415517]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -0.9)
 shape = SubResource("BoxShape3D_hit")
 
-[node name="HurtBox" type="Area3D" parent="." node_paths=PackedStringArray("health", "vulnerability", "guard", "attack")]
+[node name="HurtBox" type="Area3D" parent="." unique_id=1292744191 node_paths=PackedStringArray("health", "vulnerability", "guard", "attack")]
 collision_layer = 8
 collision_mask = 0
 monitoring = false
@@ -103,11 +102,11 @@ vulnerability = NodePath("../Vulnerability")
 guard = NodePath("../Guard")
 attack = NodePath("../Sword")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HurtBox" unique_id=1588020408]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_hurt")
 
-[node name="CombatVisual" type="Node" parent="." node_paths=PackedStringArray("model_root", "slash_mesh", "vulnerability", "guard", "attack", "health")]
+[node name="CombatVisual" type="Node" parent="." unique_id=2055355153 node_paths=PackedStringArray("model_root", "slash_mesh", "vulnerability", "guard", "attack", "health")]
 script = ExtResource("13_visual")
 model_root = NodePath("../Visual/Knight")
 slash_mesh = NodePath("../Visual/SlashMesh")
@@ -116,7 +115,7 @@ guard = NodePath("../Guard")
 attack = NodePath("../Sword")
 health = NodePath("../Health")
 
-[node name="Animator" type="Node" parent="." node_paths=PackedStringArray("animation_player", "body", "health", "vulnerability", "guard", "attack", "hurt_box")]
+[node name="Animator" type="Node" parent="." unique_id=1826018849 node_paths=PackedStringArray("animation_player", "body", "health", "vulnerability", "guard", "attack", "hurt_box")]
 script = ExtResource("15_animator")
 animation_player = NodePath("../Visual/Knight/AnimationPlayer")
 animations = ExtResource("16_animations")
@@ -127,12 +126,12 @@ guard = NodePath("../Guard")
 attack = NodePath("../Sword")
 hurt_box = NodePath("../HurtBox")
 
-[node name="Loadout" type="Node" parent="." node_paths=PackedStringArray("model")]
+[node name="Loadout" type="Node" parent="." unique_id=619963196 node_paths=PackedStringArray("model")]
 script = ExtResource("17_loadout")
 model = NodePath("../Visual/Knight")
 accessories = Array[StringName]([&"1H_Sword", &"Round_Shield"])
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurt_box", "locomotion")]
+[node name="Knockback" type="Node" parent="." unique_id=1693949069 node_paths=PackedStringArray("hurt_box", "locomotion")]
 script = ExtResource("95_knockback")
 hurt_box = NodePath("../HurtBox")
 locomotion = NodePath("../Locomotion")
