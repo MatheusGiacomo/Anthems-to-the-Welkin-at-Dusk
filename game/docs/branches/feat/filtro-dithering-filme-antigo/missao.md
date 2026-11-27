@@ -29,10 +29,18 @@ laranjas saturados) e, por cima, um filtro de filme de rolo antigo.
 - (nenhum)
 
 ## Estado
-(atualizado no /fim: o que está feito e o que falta)
+- Feito: filtro de tela em `filters/` (dois passes: dithering e filme antigo), instanciado na
+  sequência de fases e na arena, com teste de cena e nota em `docs/sistemas/filtro-de-tela.md`.
+- Ajustado após ver no jogo: pixel de 3 px e desfoque fraco, só perto das bordas.
+- Falta: validar jogando e afinar os parâmetros dos materiais se preciso.
 
 ## Decisões propostas
 - (nenhuma; cada uma em decisoes/<titulo>.md nesta pasta, sem número)
 
 ## Validar jogando
-- (atualizado no /fim)
+- Leitura dos personagens com o pixel de 3 px na câmera de cima.
+- O laranja do preparo da investida continua colorido; o amarelo da vulnerabilidade vira cinza
+  claro: conferir se ainda se lê.
+- FPS com os dois passes em tela cheia (renderer Compatibility).
+- Se riscos e tremulação cansam em sessões longas (`streak_strength`, `flicker_strength`).
+- Bordas: vinheta (`vignette_strength`) e desfoque (`edge_blur_radius`) não atrapalham a visão.
