@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://camera/fixed_camera.tscn" id="6_camera"]
 [ext_resource type="PackedScene" path="res://ui/transition/screen_fade.tscn" id="7_fade"]
 [ext_resource type="PackedScene" path="res://ui/debug/debug_overlay.tscn" id="8_debug_overlay"]
+[ext_resource type="PackedScene" path="res://filters/screen_filter.tscn" id="9_screen_filter"]
 
 [node name="LevelSequence" type="Node3D"]
 script = ExtResource("1_sequence")
@@ -17,6 +18,8 @@ player_scene = ExtResource("5_player")
 [node name="FixedCamera" parent="." instance=ExtResource("6_camera")]
 
 [node name="LevelSlot" type="Node3D" parent="."]
+
+[node name="ScreenFilter" parent="." instance=ExtResource("9_screen_filter")]
 
 [node name="DebugOverlay" parent="." instance=ExtResource("8_debug_overlay")]
 

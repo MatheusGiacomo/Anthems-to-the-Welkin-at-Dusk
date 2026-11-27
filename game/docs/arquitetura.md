@@ -14,6 +14,7 @@ Organização por feature: cada cena fica junto do seu script e dos recursos exc
 <feature>/          ex.: player/, enemies/, ui/hud/
   <nome>.tscn
   <nome>.gd
+filters/            filtro de tela (shaders de pós-processamento e seus materiais)
 components/         componentes reutilizados por mais de uma feature (ex.: health_component)
 assets/             arte, áudio e fontes compartilhados (assets/kaykit: personagens e armas, CC0)
 autoload/           singletons (cada um com decisão registrada)
@@ -22,11 +23,12 @@ test/scenes/        testes de cena (gdUnit4 scene runner)
 ```
 
 ## Cenas principais
-- `levels/level_sequence.tscn` (**Main Scene**) → `LevelSequence` (Node3D, `level_sequence.gd`) → `FixedCamera`, `LevelSlot` (a fase atual fica aqui, com o player como filho dela), `DebugOverlay`, `ScreenFade`. Carrega as fases da lista `levels`, enquadra a câmera, liga o debug, troca de fase com escurecimento e recarrega a fase quando o player morre. Ver `sistemas/fases.md`.
+- `levels/level_sequence.tscn` (**Main Scene**) → `LevelSequence` (Node3D, `level_sequence.gd`) → `FixedCamera`, `LevelSlot` (a fase atual fica aqui, com o player como filho dela), `ScreenFilter`, `DebugOverlay`, `ScreenFade`. Carrega as fases da lista `levels`, enquadra a câmera, liga o debug, troca de fase com escurecimento e recarrega a fase quando o player morre. Ver `sistemas/fases.md`.
 - `levels/level_01.tscn`, `level_02.tscn`, `level_03.tscn` → `Level` (Node3D, `level.gd`) → `WorldEnvironment`, `Sun`, `Ground` (chão 44×24 m e o caminho), `Walls`, `Props` (instâncias de `levels/props/tree.tscn` e `rock.tscn`), `Encounter` com `SpawnPoint`s, `PlayerStart` (Marker3D) e `Exit` (`LevelExit`).
 - `levels/level_exit.tscn` → `LevelExit` (Node3D) → `Barrier` (StaticBody3D, camada `world`) e `Trigger` (Area3D, máscara `player`).
+- `filters/screen_filter.tscn` → `ScreenFilter` (CanvasLayer, camada -1: sobre o 3D e abaixo de toda UI) → `Dither` (ColorRect), `BackBufferCopy` e `OldFilm` (ColorRect): dithering pixelado em tons de cinza com realce vermelho e, por cima, filme antigo. Ver `sistemas/filtro-de-tela.md`.
 - `ui/transition/screen_fade.tscn` → `ScreenFade` (CanvasLayer, camada 10) → `Cover` (ColorRect preto).
-- `arena/arena.tscn` (cena de teste) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun`; `Floor` (40×40 m); `Walls`; `Player`; `FixedCamera` (enquadra os 40×40 m de `view_bounds`); `Encounter` com cinco `SpawnPoint` (três capangas, dois ladrões); `DebugOverlay`. Trata o F5 e reinicia a arena quando o player morre.
+- `arena/arena.tscn` (cena de teste) → `Arena` (Node3D, `arena.gd`) → `WorldEnvironment` e `Sun`; `Floor` (40×40 m); `Walls`; `Player`; `FixedCamera` (enquadra os 40×40 m de `view_bounds`); `Encounter` com cinco `SpawnPoint` (três capangas, dois ladrões); `ScreenFilter`; `DebugOverlay`. Trata o F5 e reinicia a arena quando o player morre.
 - `enemies/henchman/henchman.tscn` e `enemies/thief/thief.tscn` → `Enemy` (CharacterBody3D flutuante, `enemy.gd`) → os mesmos componentes do player, inclusive o `Knockback` (o ataque é `Sword` ou `Dagger`), `CombatVisual`, `DebugLabel` e `Brain` (`HenchmanBrain` ou `ThiefBrain`) com os estados como filhos. O `Visual` tem o modelo KayKit (`Barbarian` com a espada avulsa, ou `Rogue` com besta e faca), e há também `Animator` e `Loadout`. O ladrão tem ainda `Muzzle` (saída da flecha).
 - `enemies/projectiles/arrow.tscn` → `Arrow` (Node3D, `arrow.gd`) → `Model` (flecha do KayKit, girada para apontar em -Z); filha do `Encounter` depois do disparo.
 - `player/player.tscn` → `Player` (CharacterBody3D flutuante, `player.gd`) → `CollisionShape3D`, `Visual` (modelo `Knight` do KayKit, escala 0,8 e girado 180°, e o arco do golpe), `Locomotion`, `Health`, `Vulnerability`, `Guard`, `Sword` (MeleeAttackComponent), `HitBox`, `HurtBox`, `CombatVisual`, `Animator` (CharacterAnimator), `Loadout` (ModelLoadout: espada e escudo redondo) e `Knockback` (KnockbackComponent).

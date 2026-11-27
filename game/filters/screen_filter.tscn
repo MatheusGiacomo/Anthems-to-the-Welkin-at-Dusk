@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://filters/dither_material.tres" id="1_dither"]
+[ext_resource type="Material" path="res://filters/old_film_material.tres" id="2_old_film"]
+
+[node name="ScreenFilter" type="CanvasLayer"]
+layer = -1
+
+[node name="Dither" type="ColorRect" parent="."]
+material = ExtResource("1_dither")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="OldFilm" type="ColorRect" parent="."]
+material = ExtResource("2_old_film")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
