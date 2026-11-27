@@ -13,9 +13,11 @@
 - Texturas do KayKit reimportadas pelo Godot com compressão de vídeo e mipmaps (conversão automática ao detectar uso em 3D).
 - MCP `godot` conferido: roda o projeto certo mesmo com outros editores abertos (recebe o caminho a cada chamada).
 - **Filtro de tela** (contribuição #1, `docs/sistemas/filtro-de-tela.md`): dithering pixelado de 3 px em cinzas quentes, com realce vermelho/laranja, e filme de rolo antigo por cima, na sequência de fases e na arena; a UI fica sem filtro.
+- **Escudo e intervalo do ataque:** ao abaixar o escudo o intervalo recomeça em `guard_lowered_cooldown_scale` (0,5, em `player_config.tres`); o parry perfeito segue em `perfect_parry_cooldown_scale`.
 - Check completo: 128 testes.
 
 ## Próximo passo
+- Validar jogando o intervalo menor do ataque depois de soltar o escudo (ajustar `guard_lowered_cooldown_scale` se ficar agressivo).
 - Validar o filtro de tela jogando: leitura dos personagens com o pixel de 3 px; o laranja do preparo da investida segue colorido e o amarelo da vulnerabilidade (vira cinza claro) ainda se lê; FPS com os dois passes (Compatibility); riscos e tremulação não cansam (`streak_strength`, `flicker_strength`); vinheta e desfoque de borda não atrapalham (`vignette_strength`, `edge_blur_radius`).
 - O desenvolvedor valida as camadas jogando: passos na cautela (avançar, recuar, circular) e com o escudo; circular usa `Running_Strafe` a ~0,3× e pode parecer câmera lenta (criar `strafe_reference_speed` se precisar); postura do tronco sobre o quadril (trocar `upper_body_root` para `chest` no `.tres` se inclinar estranho); defesa em movimento só no tronco.
 - Olhar as texturas dos personagens e das armas em busca de manchas da compressão de vídeo (se houver, marcar como Lossless na importação).
